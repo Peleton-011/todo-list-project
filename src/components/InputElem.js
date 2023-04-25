@@ -29,11 +29,6 @@ function InputElem({
 }) {
 	const elem = document.createElement("div");
 
-	const labelElem = document.createElement("label");
-
-	labelElem.setAttribute("for", id);
-	labelElem.innerText = label;
-
 	const inputElem = document.createElement("input");
 
 	if (disabled) {
@@ -52,8 +47,16 @@ function InputElem({
 		["placeholder", placeholder],
 	]);
 
-	elem.appendChild(labelElem);
 	elem.appendChild(inputElem);
+    
+    if (label) {
+        const labelElem = document.createElement("label");
+
+        labelElem.setAttribute("for", id);
+        labelElem.innerText = label;
+        
+        elem.insertBefore(labelElem, elem.firstChild);
+    }
 
 	if (!description) {
 		return elem;

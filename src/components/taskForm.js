@@ -1,8 +1,8 @@
-import InputElem from "./formGen";
+import InputElem from "./InputElem";
 
 import SliderElem from "./slider";
 
-function getTaskForm() {
+function getTaskForm(onSubmit) {
 	const form = document.createElement("form");
 	form.classList.add("container");
 
@@ -55,11 +55,14 @@ function getTaskForm() {
 		steps: [10, 20, 30, 40, 50, 60, 70, 80, 90],
 	});
 
+    const submit = InputElem({type: "submit", value: "Add Task"});
+
 	form.appendChild(title);
 	form.appendChild(description);
 	form.appendChild(dueDate);
 	form.appendChild(dueTime);
 	form.appendChild(priority);
+    form.appendChild(submit);
 
 	return form;
 

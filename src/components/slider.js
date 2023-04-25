@@ -1,4 +1,4 @@
-import InputElem from "./formGen";
+import InputElem from "./InputElem";
 
 function SliderElem({
 	id,
@@ -36,7 +36,7 @@ function SliderElem({
 
 		const inputElem = rangeElem.querySelector("input");
 
-		rangeElem.insertBefore(stepsElem, inputElem.nextSibling);
+		rangeElem.appendChild(stepsElem);
 
 		inputElem.setAttribute("list", id + "markers");
 	}
@@ -111,6 +111,7 @@ function getStyle() {
       .range-wrap:hover > input{
           margin:  8px;
           margin-top: 10px;
+          margin-bottom: 10px;
     }
 
     datalist {
