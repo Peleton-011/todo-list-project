@@ -2,10 +2,11 @@ import "@picocss/pico";
 
 import getTaskForm from "./components/taskForm";
 import Task from "./logic/task";
+import tasksDisplay from "./components/tasks";
 
 const taskList = [];
-const component = () => {
 
+const component = () => {
 	const taskOnSubmit = (e) => {
 		e.preventDefault();
 		const FD = new FormData(document.querySelector("form"));
@@ -27,11 +28,13 @@ const component = () => {
 			})
 		);
 
-        console.log(taskList);
+		console.log(taskList);
 	};
-	const component = getTaskForm(taskOnSubmit);
+	const component = document.createElement("main");
 
-	console.log(component);
+	component.appendChild(tasksDisplay(taskList));
+    
+	component.appendChild(getTaskForm(taskOnSubmit));
 
 	return component;
 };
