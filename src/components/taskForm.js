@@ -1,6 +1,6 @@
 import InputElem from "./formGen";
 
-import {customSlider, style as sliderStyle} from "./slider";
+import SliderElem from "./slider";
 
 function getTaskForm() {
 	const form = document.createElement("form");
@@ -39,37 +39,26 @@ function getTaskForm() {
 		description: "This field is optional",
 	});
 
+	// const priority = new customSlider();
 
-    const priority = new customSlider();
+	const priority = SliderElem({
+		id: "priority",
+		label: "Priority Level",
+		name: "priorityLevel",
+		value: "0",
+		description: "Priority level from 0 to 100",
+		min: "0",
+		max: "100",
+		displayValue: true,
+	});
 
-	// const priority = InputElem({
-	// 	id: "priority",
-	// 	type: "range",
-	// 	label: "Priority Level",
-	// 	name: "priorityLevel",
-	// 	value: "0",
-	// 	description: "Priority level from 0 to 100",
-	// 	attrs: [
-	// 		["min", "0"],
-	// 		["max", "100"],
-	// 	],
-	// });
+	form.appendChild(title);
+	form.appendChild(description);
+	form.appendChild(dueDate);
+	form.appendChild(dueTime);
+	form.appendChild(priority);
 
-    // const priorityInput = priority.querySelector("input");
-
-    // priorityInput.addEventListener("change", (event) => {
-    //     priority.setAttribute("data-tooltip", event.target.value.trim());
-    // })
-
-
-    form.appendChild(title);
-    form.appendChild(description);
-    form.appendChild(dueDate);
-    form.appendChild(dueTime);
-    form.appendChild(sliderStyle);
-    form.appendChild(priority);
-
-    return form;
+	return form;
 
 	/*
     Config: 
