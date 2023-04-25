@@ -1,4 +1,3 @@
-
 import "@picocss/pico";
 
 import getTaskForm from "./components/taskForm";
@@ -6,8 +5,7 @@ import getTaskForm from "./components/taskForm";
 const component = () => {
 	const component = getTaskForm();
 
-
-    console.log(component)
+	console.log(component);
 
 	return component;
 };

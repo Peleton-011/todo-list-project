@@ -4,7 +4,7 @@ import SliderElem from "./slider";
 
 function getTaskForm() {
 	const form = document.createElement("form");
-    form.classList.add("container")
+	form.classList.add("container");
 
 	const title = InputElem({
 		id: "title",
@@ -51,10 +51,8 @@ function getTaskForm() {
 		min: "0",
 		max: "100",
 		displayValue: true,
-        useSteps: true,
-        steps: [
-            10, 20, 30, 40, 50, 60, 70, 80, 90
-        ]
+		useSteps: true,
+		steps: [10, 20, 30, 40, 50, 60, 70, 80, 90],
 	});
 
 	form.appendChild(title);

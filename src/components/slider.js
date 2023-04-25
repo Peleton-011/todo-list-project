@@ -34,12 +34,9 @@ function SliderElem({
 	if (useSteps && steps.length > 0) {
 		const stepsElem = getSteps(steps, id);
 
-        const inputElem = rangeElem.querySelector("input") 
+		const inputElem = rangeElem.querySelector("input");
 
-		rangeElem.insertBefore(
-			stepsElem,
-			inputElem.nextSibling
-		);
+		rangeElem.insertBefore(stepsElem, inputElem.nextSibling);
 
 		inputElem.setAttribute("list", id + "markers");
 	}
@@ -69,7 +66,9 @@ function SliderElem({
 		bubble.innerHTML = val;
 
 		// Sorta magic numbers based on size of the native UI thumb
-		bubble.style.left = `calc(calc(${newVal}% + (${5 - newVal * 0.15}px)) - calc(${newVal / 100}rem * 1.5) )`;
+		bubble.style.left = `calc(calc(${newVal}% + (${
+			5 - newVal * 0.15
+		}px)) - calc(${newVal / 100}rem * 1.5) )`;
 	}
 
 	return rangeElem;
@@ -113,6 +112,10 @@ function getStyle() {
           margin:  8px;
           margin-top: 10px;
     }
+
+    datalist {
+        display: none;
+      }
     `;
 
 	return styleTag;
@@ -125,7 +128,7 @@ function getSteps(steps, id) {
 	steps.forEach((step) => {
 		const option = document.createElement("option");
 		option.value = step;
-        option.label = "ass"
+		option.label = "ass";
 		datalist.appendChild(option);
 	});
 
