@@ -50,10 +50,15 @@ function InputElem({
 		["placeholder", placeholder],
 	]);
 
+	elem.appendChild(label);
+    elem.appendChild(inputElem);
+    
+    if (!description) {
+        return elem;
+    }
+
 	const descriptionElem = document.createElement("small");
 	descriptionElem.innerText = description;
-
-	elem.appendChild(label);
 
 	return elem;
 }
