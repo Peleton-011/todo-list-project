@@ -4,6 +4,7 @@ import SliderElem from "./slider";
 
 function getTaskForm() {
 	const form = document.createElement("form");
+    form.classList.add("container")
 
 	const title = InputElem({
 		id: "title",

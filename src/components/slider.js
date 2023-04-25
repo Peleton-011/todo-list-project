@@ -69,7 +69,7 @@ function SliderElem({
 		bubble.innerHTML = val;
 
 		// Sorta magic numbers based on size of the native UI thumb
-		bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+		bubble.style.left = `calc(calc(${newVal}% + (${5 - newVal * 0.15}px)) - calc(${newVal / 100}rem * 1.5) )`;
 	}
 
 	return rangeElem;
@@ -80,24 +80,27 @@ function getStyle() {
 	styleTag.innerHTML = `
 
     .range-wrap > * {
-        transition: transform 0.5s ease, opacity 0.5s ease-in-out, margin-top 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
     }
 
     .bubble, .bubble::after {
-        display: none;
+        position: relative;
+        margin-right: 8px;
+        opacity: 0;
+        
     }
 
     .range-wrap:hover > .bubble {
-        display: block;
+        opacity: 1;
         background-color: var(--range-thumb-color);
         padding: 4px 12px;
-        position: absolute;
+        max-width: fit-content;
         border-radius: 4px;
         left: 50%;
         transform: translateX(-50%);
       }
       .range-wrap:hover > .bubble::after {
-        display: block;
+        opacity: 1;
         content: "";
         position: absolute;
         width: 2px;
@@ -106,8 +109,9 @@ function getStyle() {
         bottom: -1px;
         left: 50%;
       }
-    .range-wrap:hover > input{
-        margin-top: calc(2rem + 8px);
+      .range-wrap:hover > input{
+          margin:  8px;
+          margin-top: 10px;
     }
     `;
 
