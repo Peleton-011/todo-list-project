@@ -25,16 +25,18 @@ function SliderElem({
 		attrs: [...attrs, ["min", min], ["max", max], ["class", "range"]],
 	});
 
-    if (!displayValue) {
-        return rangeElem;
-    }
+	if (!displayValue) {
+		return rangeElem;
+	}
 
 	rangeElem.classList.add("range-wrap");
+
+    rangeElem.insertBefore(getStyle(), rangeElem.firstChild);
 
 	const bubbleElem = document.createElement("output");
 	bubbleElem.classList.add("bubble");
 
-	rangeElem.appendChild(bubbleElem);
+	rangeElem.insertBefore(bubbleElem, rangeElem.querySelector("input"));
 
 	const range = rangeElem.querySelector(".range");
 	const bubble = rangeElem.querySelector(".bubble");
@@ -55,7 +57,61 @@ function SliderElem({
 		bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
 	}
 
-    return rangeElem;
+	return rangeElem;
+}
+
+function getStyle() {
+	const styleTag = document.createElement("style");
+	styleTag.innerHTML = `
+
+    .range-wrap > * {
+        transition: transform 0.5s ease, opacity 0.5s ease-in-out, margin-top 0.2s ease-in-out;
+    }
+
+    .bubble, .bubble::after {
+        display: none;
+    }
+
+    .range-wrap:hover > .bubble {
+        display: block;
+        background-color: var(--range-thumb-color);
+        padding: 4px 12px;
+        position: absolute;
+        border-radius: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .range-wrap:hover > .bubble::after {
+        display: block;
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: var(--range-thumb-color);
+        bottom: -1px;
+        left: 50%;
+      }
+    .range-wrap:hover > input{
+        margin-top: calc(2rem + 8px);
+    }
+    `;
+
+    return styleTag;
 }
 
 export default SliderElem;
+
+
+/*
+<label for="temp">Choose a comfortable temperature:</label><br />
+<input type="range" id="temp" name="temp" list="markers" />
+
+<datalist id="markers">
+  <option value="0"></option>
+  <option value="25"></option>
+  <option value="50"></option>
+  <option value="75"></option>
+  <option value="100"></option>
+</datalist>
+
+*/
