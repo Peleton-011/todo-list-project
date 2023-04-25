@@ -6,6 +6,15 @@ import tasksDisplay from "./components/tasks";
 
 const taskList = [];
 
+import Project from "./logic/project";
+import Task from "./logic/task";
+
+let lastId = 0;
+
+function newId() {
+	return ++lastId;
+}
+
 const component = () => {
 	const taskOnSubmit = (e) => {
 		e.preventDefault();
