@@ -11,6 +11,8 @@ function SliderElem({
 	min,
 	max,
 	displayValue,
+	useSteps,
+	steps = [],
 	attrs = [],
 }) {
 	const rangeElem = InputElem({
@@ -29,9 +31,22 @@ function SliderElem({
 		return rangeElem;
 	}
 
+	if (useSteps && steps.length > 0) {
+		const stepsElem = getSteps(steps, id);
+
+        const inputElem = rangeElem.querySelector("input") 
+
+		rangeElem.insertBefore(
+			stepsElem,
+			inputElem.nextSibling
+		);
+
+		inputElem.setAttribute("list", id + "markers");
+	}
+
 	rangeElem.classList.add("range-wrap");
 
-    rangeElem.insertBefore(getStyle(), rangeElem.firstChild);
+	rangeElem.insertBefore(getStyle(), rangeElem.firstChild);
 
 	const bubbleElem = document.createElement("output");
 	bubbleElem.classList.add("bubble");
@@ -96,22 +111,21 @@ function getStyle() {
     }
     `;
 
-    return styleTag;
+	return styleTag;
+}
+
+function getSteps(steps, id) {
+	const datalist = document.createElement("datalist");
+	datalist.id = id + "markers";
+
+	steps.forEach((step) => {
+		const option = document.createElement("option");
+		option.value = step;
+        option.label = "ass"
+		datalist.appendChild(option);
+	});
+
+	return datalist;
 }
 
 export default SliderElem;
-
-
-/*
-<label for="temp">Choose a comfortable temperature:</label><br />
-<input type="range" id="temp" name="temp" list="markers" />
-
-<datalist id="markers">
-  <option value="0"></option>
-  <option value="25"></option>
-  <option value="50"></option>
-  <option value="75"></option>
-  <option value="100"></option>
-</datalist>
-
-*/

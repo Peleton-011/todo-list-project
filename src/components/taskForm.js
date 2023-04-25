@@ -50,6 +50,10 @@ function getTaskForm() {
 		min: "0",
 		max: "100",
 		displayValue: true,
+        useSteps: true,
+        steps: [
+            10, 20, 30, 40, 50, 60, 70, 80, 90
+        ]
 	});
 
 	form.appendChild(title);
