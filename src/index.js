@@ -4,7 +4,7 @@ import getTaskForm from "./components/taskForm";
 import Task from "./logic/task";
 import tasksDisplay from "./components/tasks";
 
-const taskList = [];
+const taskList = [{title: "a", description: "b"}, {title: "c", description: "d"}, {title: "e", description: "f"}];
 
 let lastId = 0;
 
