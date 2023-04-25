@@ -26,7 +26,7 @@ function InputElem({
 	required,
 	disabled,
 }) {
-	elem = document.createElement("div");
+	const elem = document.createElement("div");
 
 	const labelElem = document.createElement("label");
 
@@ -53,5 +53,9 @@ function InputElem({
 	const descriptionElem = document.createElement("small");
 	descriptionElem.innerText = description;
 
-	this.elem.appendChild(label);
+	elem.appendChild(label);
+
+	return elem;
 }
+
+export default InputElem;
