@@ -3,7 +3,12 @@ import "@picocss/pico";
 import getTaskForm from "./components/taskForm";
 
 const component = () => {
-	const component = getTaskForm();
+
+    const taskOnSubmit = (e) => {
+        e.preventDefault();
+        console.log("test")
+    }
+	const component = getTaskForm(taskOnSubmit);
 
 	console.log(component);
 

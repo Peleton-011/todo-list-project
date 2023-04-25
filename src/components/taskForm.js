@@ -2,7 +2,7 @@ import InputElem from "./InputElem";
 
 import SliderElem from "./slider";
 
-function getTaskForm(onSubmit) {
+function getTaskForm(onSubmitFunc) {
 	const form = document.createElement("form");
 	form.classList.add("container");
 
@@ -63,6 +63,8 @@ function getTaskForm(onSubmit) {
 	form.appendChild(dueTime);
 	form.appendChild(priority);
     form.appendChild(submit);
+
+    form.onsubmit = onSubmitFunc
 
 	return form;
 
