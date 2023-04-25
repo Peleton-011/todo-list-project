@@ -2,6 +2,14 @@ import InputElem from "./InputElem";
 
 import SliderElem from "./slider";
 
+function addChildren(target, source) {
+    const children = [...source.childNodes];
+
+    console.log(children);
+
+    children.forEach(child => target.appendChild(child));
+}
+
 function getTaskForm(onSubmitFunc) {
 	const form = document.createElement("form");
 	form.classList.add("container");
@@ -57,12 +65,12 @@ function getTaskForm(onSubmitFunc) {
 
     const submit = InputElem({type: "submit", value: "Add Task"});
 
-	form.appendChild(title);
-	form.appendChild(description);
-	form.appendChild(dueDate);
-	form.appendChild(dueTime);
-	form.appendChild(priority);
-    form.appendChild(submit);
+    addChildren(form, title);
+    addChildren(form, description);
+    addChildren(form, dueDate);
+    addChildren(form, dueTime);
+    addChildren(form, priority);
+    addChildren(form, submit);
 
     form.onsubmit = onSubmitFunc
 

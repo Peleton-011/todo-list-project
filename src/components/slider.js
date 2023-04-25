@@ -71,7 +71,10 @@ function SliderElem({
 		}px)) - calc(${newVal / 100}rem * 1.5) )`;
 	}
 
-	return rangeElem;
+	const wrapper = document.createElement("div");
+
+	wrapper.appendChild(rangeElem);
+	return wrapper;
 }
 
 function getStyle() {
