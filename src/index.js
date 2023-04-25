@@ -1,10 +1,13 @@
 
 import "@picocss/pico";
 
-const component = () => {
-	const component = document.createElement("div");
+import getTaskForm from "./components/taskForm";
 
-	component.textContent = "poop";
+const component = () => {
+	const component = getTaskForm();
+
+
+    console.log(component)
 
 	return component;
 };

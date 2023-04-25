@@ -25,6 +25,7 @@ function InputElem({
 	description,
 	required,
 	disabled,
+	attrs = [],
 }) {
 	const elem = document.createElement("div");
 
@@ -44,21 +45,24 @@ function InputElem({
 	}
 
 	setAttrs(inputElem, [
+		...attrs,
 		["type", type],
 		["name", name],
 		["value", value],
 		["placeholder", placeholder],
 	]);
 
-	elem.appendChild(label);
-    elem.appendChild(inputElem);
-    
-    if (!description) {
-        return elem;
-    }
+	elem.appendChild(labelElem);
+	elem.appendChild(inputElem);
+
+	if (!description) {
+		return elem;
+	}
 
 	const descriptionElem = document.createElement("small");
 	descriptionElem.innerText = description;
+
+	elem.appendChild(descriptionElem);
 
 	return elem;
 }
