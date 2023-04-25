@@ -54,7 +54,7 @@ module.exports = () => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                title: "Paradise 11",
+                title: "To-Do List Manager",
             }),
         ],
         output: {

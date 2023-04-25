@@ -1,9 +1,10 @@
 
+import "@picocss/pico";
 
 const component = () => {
 	const component = document.createElement("div");
 
-	component.textContent = "halo";
+	component.textContent = "poop";
 
 	return component;
 };
