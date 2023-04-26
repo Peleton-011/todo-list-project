@@ -4,6 +4,8 @@ import getTaskForm from "./components/taskForm";
 import Task from "./logic/task";
 import tasksDisplay from "./components/tasks";
 
+import Header from "./components/Header";
+
 const taskList = [];
 
 function removeTask(id) {
@@ -20,6 +22,7 @@ function showTasks(parent, taskList) {
 	parent.appendChild(tasksDisplay(taskList, removeTask));
 }
 
+
 //FOR TESTING vvvv
 
 addTask({ title: "a", description: "b" });
@@ -27,11 +30,11 @@ addTask({ title: "c", description: "d" });
 
 //FOR TESTING ^^^^
 
-
 const component = () => {
 	const component = document.createElement("main");
+    component.classList.add("container")
 
-    const taskOnSubmit = (e) => {
+	const taskOnSubmit = (e) => {
 		e.preventDefault();
 		const FD = new FormData(document.querySelector("form"));
 		const [taskTitle, description, dueDate, dueTime, priorityLevel] = [
@@ -53,15 +56,20 @@ const component = () => {
 		console.log(taskList);
 	};
 
+	const onAddTask = () => {
+		const main = document.querySelector("main");
+		main.appendChild(getTaskForm(taskOnSubmit));
+	};
 
+    const onAddProject = () => {
+        return "cum"
+    }
 
+	component.appendChild(Header({ onAddTask, onAddProject }));
 
 	showTasks(component, taskList);
 
-	component.appendChild(getTaskForm(taskOnSubmit));
-
 	return component;
 };
-
 
 document.body.appendChild(component());
