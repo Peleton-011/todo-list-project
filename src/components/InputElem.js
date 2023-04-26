@@ -29,7 +29,8 @@ function InputElem({
 }) {
 	const elem = document.createElement("div");
 
-	const inputElem = document.createElement("input");
+	const isTextArea = type === "textarea";
+	const inputElem = document.createElement(isTextArea ? "textarea" : "input");
 
 	if (disabled) {
 		placeholder = "Disabled";
@@ -48,15 +49,15 @@ function InputElem({
 	]);
 
 	elem.appendChild(inputElem);
-    
-    if (label) {
-        const labelElem = document.createElement("label");
 
-        labelElem.setAttribute("for", id);
-        labelElem.innerText = label;
-        
-        elem.insertBefore(labelElem, elem.firstChild);
-    }
+	if (label) {
+		const labelElem = document.createElement("label");
+
+		labelElem.setAttribute("for", id);
+		labelElem.innerText = label;
+
+		elem.insertBefore(labelElem, elem.firstChild);
+	}
 
 	if (!description) {
 		return elem;

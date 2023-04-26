@@ -3,16 +3,18 @@ import InputElem from "./InputElem";
 import SliderElem from "./slider";
 
 function addChildren(target, source) {
-    const children = [...source.childNodes];
+	const children = [...source.childNodes];
 
-    console.log(children);
+	console.log(children);
 
-    children.forEach(child => target.appendChild(child));
+	children.forEach((child) => target.appendChild(child));
 }
 
 function getTaskForm(onSubmitFunc) {
 	const form = document.createElement("form");
 	form.classList.add("container");
+
+	form.id = "task-form";
 
 	const title = InputElem({
 		id: "title",
@@ -30,6 +32,10 @@ function getTaskForm(onSubmitFunc) {
 		name: "description",
 		placeholder:
 			"Ask Danny if he has some, or go to the store to get them.",
+		attrs: [
+			["rows", 4],
+			["form", "task-form"],
+		],
 	});
 
 	const dueDate = InputElem({
@@ -63,16 +69,16 @@ function getTaskForm(onSubmitFunc) {
 		steps: [10, 20, 30, 40, 50, 60, 70, 80, 90],
 	});
 
-    const submit = InputElem({type: "submit", value: "Add Task"});
+	const submit = InputElem({ type: "submit", value: "Add Task" });
 
-    addChildren(form, title);
-    addChildren(form, description);
-    addChildren(form, dueDate);
-    addChildren(form, dueTime);
-    addChildren(form, priority);
-    addChildren(form, submit);
+	addChildren(form, title);
+	addChildren(form, description);
+	addChildren(form, dueDate);
+	addChildren(form, dueTime);
+	addChildren(form, priority);
+	addChildren(form, submit);
 
-    form.onsubmit = onSubmitFunc
+	form.onsubmit = onSubmitFunc;
 
 	return form;
 
