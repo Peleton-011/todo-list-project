@@ -1,27 +1,53 @@
+function Header({ onAddTask, onAddProject }) {
+	const header = document.createElement("header");
 
-function Header ({onAddTask, onAddProject}) {
-    const header = document.createElement("header");
+	const title = document.createElement("h1");
+	title.innerText = "To-Do";
 
-    const title = document.createElement("h1");
-    title.innerText = "To-Do"
+	const btns = document.createElement("div");
 
-    const btns = document.createElement("div");
-    const addTask = document.createElement("button");
-    addTask.innerText = "Add Task";
-    addTask.addEventListener("click", onAddTask);
-    const addProject =  document.createElement("button");
-    addProject.innerText = "Add Project";
-    addProject.addEventListener("click", onAddProject);
+	const addTask = btn({ onclick: onAddTask, text: "Add Task" });
 
-    btns.appendChild(addTask);
-    btns.appendChild(addProject);
+	const addProject = btn({ onclick: onAddProject, text: "Add Project"})
 
-    header.appendChild(title);
-    header.appendChild(btns);
+	btns.setAttribute(
+		"style",
+		`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: end;
 
-    return header
+    `
+	);
 
+	btns.appendChild(addTask);
+	btns.appendChild(addProject);
+
+	header.setAttribute(
+		"style",
+		`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    `
+	);
+
+	header.appendChild(title);
+	header.appendChild(btns);
+
+	return header;
 }
 
+function btn({ onclick, text }) {
+	const btn = document.createElement("button");
+	btn.innerText = text;
+	btn.addEventListener("click", onclick);
+	btn.setAttribute("role", "button");
+	btn.setAttribute(
+		"style",
+		`width: fit-content;
+    height: fit-content;`
+	);
+	return btn;
+}
 
 export default Header;
