@@ -4,13 +4,10 @@ import getTaskForm from "./components/taskForm";
 import Task from "./logic/task";
 import tasksDisplay from "./components/tasks";
 
-const taskList = [{title: "a", description: "b"}, {title: "c", description: "d"}, {title: "e", description: "f"}];
+const taskList = [new Task({title: "a", description: "b"}), new Task({title: "c", description: "d"})];
 
-let lastId = 0;
 
-function newId() {
-	return ++lastId;
-}
+
 
 const component = () => {
 	const taskOnSubmit = (e) => {
@@ -30,7 +27,7 @@ const component = () => {
 				description: description,
 				priority: priorityLevel,
 				dueDate: [dueDate, dueTime],
-				id: 1,
+
 			})
 		);
 

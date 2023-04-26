@@ -19,6 +19,20 @@ function getTaskElem({ title, description }) {
 
 	descriptionElem.innerText = description;
 
+    const removeBtn = document.createElement("button");
+    removeBtn.innerText = "X";
+    removeBtn.onclick = (e) => {
+        const titleTemp = e.target.parentElement;
+
+        const taskTemp = titleTemp.parentElement;
+
+        const taskList = taskTemp.parentElement;
+
+        taskList.removeChild(taskTemp)
+    }
+
+    titleElem.appendChild(removeBtn)
+
 	task.appendChild(titleElem);
 	task.appendChild(descriptionElem);
 	return task;
