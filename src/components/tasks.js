@@ -1,6 +1,7 @@
 function tasksDisplay(tasks) {
 	const taskListElem = document.createElement("section");
     taskListElem.id = "taskList";
+    taskListElem.classList.add("container");
 
 	tasks.map((task) => {
 		return getTaskElem(task);
@@ -10,8 +11,8 @@ function tasksDisplay(tasks) {
 }
 
 function getTaskElem({ title, description }) {
-	const task = document.createElement("article");
-	const titleElem = document.createElement("h3");
+	const task = document.createElement("details");
+	const titleElem = document.createElement("summary");
 	titleElem.innerText = title;
 
 	const descriptionElem = document.createElement("p");
