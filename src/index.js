@@ -4,13 +4,34 @@ import getTaskForm from "./components/taskForm";
 import Task from "./logic/task";
 import tasksDisplay from "./components/tasks";
 
-const taskList = [new Task({title: "a", description: "b"}), new Task({title: "c", description: "d"})];
+const taskList = [];
 
+function removeTask(id) {
+	taskList.filter((currTask) => currTask.id !== id);
+}
 
+function addTask(config) {
+	taskList.push(new Task(config));
+}
+
+function showTasks(parent, taskList) {
+	const taskListElem = document.getElementById("taskList");
+	if (taskListElem) parent.removeChild(taskListElem);
+	parent.appendChild(tasksDisplay(taskList, removeTask));
+}
+
+//FOR TESTING vvvv
+
+addTask({ title: "a", description: "b" });
+addTask({ title: "c", description: "d" });
+
+//FOR TESTING ^^^^
 
 
 const component = () => {
-	const taskOnSubmit = (e) => {
+	const component = document.createElement("main");
+
+    const taskOnSubmit = (e) => {
 		e.preventDefault();
 		const FD = new FormData(document.querySelector("form"));
 		const [taskTitle, description, dueDate, dueTime, priorityLevel] = [
@@ -21,32 +42,26 @@ const component = () => {
 			FD.get("priorityLevel"),
 		];
 
-		taskList.push(
-			new Task({
-				title: taskTitle,
-				description: description,
-				priority: priorityLevel,
-				dueDate: [dueDate, dueTime],
+		addTask({
+			title: taskTitle,
+			description: description,
+			priority: priorityLevel,
+			dueDate: [dueDate, dueTime],
+		});
 
-			})
-		);
-
-        showTasks(component, taskList);
+		showTasks(component, taskList);
 		console.log(taskList);
 	};
-	const component = document.createElement("main");
+
+
+
 
 	showTasks(component, taskList);
-    
+
 	component.appendChild(getTaskForm(taskOnSubmit));
 
 	return component;
 };
 
-function showTasks(parent, taskList) {
-    const taskListElem = document.getElementById("taskList");
-    if (taskListElem) parent.removeChild(taskListElem);
-    parent.appendChild(tasksDisplay(taskList))
-}
 
 document.body.appendChild(component());
