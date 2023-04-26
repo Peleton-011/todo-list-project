@@ -1,5 +1,6 @@
 function PopUp({ title, onClose, content }) {
 	const PopUp = document.createElement("dialog");
+    PopUp.setAttribute("open", true);
 	const Content = document.createElement("article");
 
 	Content.appendChild(Header({ title: title, onClose: onClose }));

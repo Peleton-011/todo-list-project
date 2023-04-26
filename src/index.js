@@ -4,6 +4,7 @@ import getTaskForm from "./components/taskForm";
 import Task from "./logic/task";
 
 import Header from "./components/Header";
+import PopUp from "./components/PopUp";
 
 const taskList = [];
 
@@ -64,6 +65,10 @@ const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
 
+    const onClose = ((e) => {
+        return 3
+    })
+
 	const taskOnSubmit = (e) => {
 		e.preventDefault();
 		const FD = new FormData(document.querySelector("form"));
@@ -82,12 +87,12 @@ const component = () => {
 			dueDate: [dueDate, dueTime],
 		});
 
-		console.log(taskList);
+        onClose()
 	};
 
 	const onAddTask = () => {
 		const main = document.querySelector("main");
-		main.appendChild(getTaskForm(taskOnSubmit));
+		main.appendChild(PopUp({title: "Add Task", onClose: onClose, content: getTaskForm(taskOnSubmit)}));
 	};
 
 	const onAddProject = () => {
