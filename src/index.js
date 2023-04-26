@@ -50,6 +50,16 @@ function getTaskElem({ title, description, id }) {
 	return task;
 }
 
+function addTasksTo(tasks, target) {
+	tasks
+		.filter((task) => task.type === "task")
+		.map((task) => getTaskElem(task))
+		.reduce((acc, task) => {
+			acc.appendChild(task);
+			return acc;
+		}, target);
+}
+
 const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
@@ -88,13 +98,7 @@ const component = () => {
 
 	const taskListElem = tasksDisplay();
 
-	taskList
-		.filter((task) => task.type === "task")
-		.map((task) => getTaskElem(task))
-		.reduce((acc, task) => {
-			acc.appendChild(task);
-			return acc;
-		}, taskListElem);
+    addTasksTo(taskList, taskListElem)
 
 	component.appendChild(taskListElem);
 
