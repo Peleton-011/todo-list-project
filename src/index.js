@@ -34,15 +34,22 @@ const component = () => {
 			})
 		);
 
+        showTasks(component, taskList);
 		console.log(taskList);
 	};
 	const component = document.createElement("main");
 
-	component.appendChild(tasksDisplay(taskList));
+	showTasks(component, taskList);
     
 	component.appendChild(getTaskForm(taskOnSubmit));
 
 	return component;
 };
+
+function showTasks(parent, taskList) {
+    const taskListElem = document.getElementById("taskList");
+    if (taskListElem) parent.removeChild(taskListElem);
+    parent.appendChild(tasksDisplay(taskList))
+}
 
 document.body.appendChild(component());

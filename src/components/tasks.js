@@ -1,5 +1,6 @@
 function tasksDisplay(tasks) {
 	const taskListElem = document.createElement("section");
+    taskListElem.id = "taskList";
 
 	tasks.map((task) => {
 		return getTaskElem(task);
