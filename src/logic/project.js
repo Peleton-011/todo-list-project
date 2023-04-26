@@ -3,6 +3,8 @@ import { prototype } from 'html-webpack-plugin';
 import Task from './Task';
 
 class Project extends Task {
+
+    type = "project";
     
     constructor(params) {
         super(params);

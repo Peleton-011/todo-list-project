@@ -6,6 +6,8 @@ function newId() {
 }
 class Task {
 
+    type = "task"
+
     constructor({title, description, priority, dueDate, id}) {
 
         this.title = title || "Unnamed Task";
