@@ -1,5 +1,3 @@
-
-
 function PopUp({ title, content, id }) {
 	const PopUp = document.createElement("dialog");
 	PopUp.id = id;
@@ -12,7 +10,7 @@ function PopUp({ title, content, id }) {
     `
 	);
 
-    const toggleModal =  getToggleModal(id);
+	const toggleModal = getToggleModal(id);
 
 	Content.appendChild(Header(...arguments));
 
@@ -38,7 +36,6 @@ function Header({ title, id }) {
 const getToggleModal = (id) => {
 	return (event) => {
 		event.preventDefault();
-        console.log("toggling modal taskForm !")
 		const modal = document.getElementById(id);
 		typeof modal != "undefined" && modal != null && isModalOpen(modal)
 			? closeModal(modal)

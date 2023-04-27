@@ -65,8 +65,6 @@ const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
 
-
-
 	const taskOnSubmit = (e) => {
 		e.preventDefault();
 		const FD = new FormData(document.querySelector("form"));
@@ -88,11 +86,11 @@ const component = () => {
 		toggleTaskForm(e);
 	};
 
-    const [taskForm, toggleTaskForm] = PopUp({
-        title: "Add Task",
-        content: getTaskForm(taskOnSubmit),
-        id: "taskForm",
-    })
+	const [taskForm, toggleTaskForm] = PopUp({
+		title: "Add Task",
+		content: getTaskForm(taskOnSubmit),
+		id: "taskForm",
+	});
 
 	component.appendChild(taskForm);
 

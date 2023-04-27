@@ -4,9 +4,6 @@ import SliderElem from "./slider";
 
 function addChildren(target, source) {
 	const children = [...source.childNodes];
-
-	console.log(children);
-
 	children.forEach((child) => target.appendChild(child));
 }
 
