@@ -1,5 +1,4 @@
-import { prototype } from "html-webpack-plugin";
-import Task from "./Task";
+import Task from "./task";
 
 class Project extends Task {
 	type = "project";

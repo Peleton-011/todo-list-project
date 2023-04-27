@@ -1,7 +1,9 @@
 import "@picocss/pico";
 
 import getTaskForm from "./components/taskForm";
+import getProjectForm from "./components/projectForm";
 import Task from "./logic/task";
+import Project from "./logic/project";
 
 import Header from "./components/Header";
 import PopUp from "./components/PopUp";
@@ -25,8 +27,26 @@ function addTask({ taskTitle, description, dueDate, dueTime, priorityLevel }) {
 
 	taskListElem.appendChild(getTaskElem(taskInterface));
 }
+function addProject({
+	projectTitle,
+	description,
+	dueDate,
+	dueTime,
+	priorityLevel,
+}) {
+	const projectInterface = {
+		title: projectTitle,
+		description: description,
+		priority: priorityLevel,
+		dueDate: [dueDate, dueTime],
+	};
+	taskList.push(new Project(projectInterface));
+	const taskListElem = document.getElementById("taskList");
 
-function tasksDisplay() {
+	taskListElem.appendChild(getProjectElem(projectInterface));
+}
+
+function tasksDisplayElem() {
 	const taskListElem = document.createElement("section");
 	taskListElem.id = "taskList";
 	taskListElem.classList.add("container");
@@ -57,7 +77,30 @@ function getTaskElem({ title, description, id }) {
 	return task;
 }
 
-function addTasksTo(tasks, target) {
+function getProjectElem({ title, description, id}) {
+    const task = document.createElement("details");
+	task.id = id;
+	const titleElem = document.createElement("summary");
+	titleElem.innerText = title;
+
+	const descriptionElem = document.createElement("p");
+
+	descriptionElem.innerText = description;
+
+	const removeBtn = document.createElement("button");
+	removeBtn.innerText = "X";
+	removeBtn.onclick = (e) => {
+		removeTask(id);
+	};
+
+	titleElem.appendChild(removeBtn);
+
+	task.appendChild(titleElem);
+	task.appendChild(descriptionElem);
+	return task;
+}
+
+function addTasksTo({ tasks, target }) {
 	tasks
 		.filter((task) => task.type === "task")
 		.map((task) => getTaskElem(task))
@@ -97,17 +140,17 @@ function initializeTaskForm() {
 }
 
 function initializeProjectForm() {
-    const projectOnSubmit = (e) => {
+	const projectOnSubmit = (e) => {
 		e.preventDefault();
 
-		addTask(parseForm("project-form"));
+		addProject(parseForm("project-form"));
 
 		toggleProjectForm(e);
 	};
 
-	const [ projectForm, toggleProjectForm ] = PopUp({
+	const [projectForm, toggleProjectForm] = PopUp({
 		title: "Add Project",
-		content: getTaskForm(projectOnSubmit),
+		content: getProjectForm(projectOnSubmit),
 		id: "project-form-popup",
 	});
 
@@ -118,21 +161,21 @@ const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
 
-    //Forms
+	//Forms
 	const { taskForm, toggleTaskForm } = initializeTaskForm();
 	const { projectForm, toggleProjectForm } = initializeProjectForm();
 
 	component.appendChild(taskForm);
 	component.appendChild(projectForm);
 
-    //Header (With form activation included)
+	//Header (With form activation included)
 	component.appendChild(
 		Header({ onAddTask: toggleTaskForm, onAddProject: toggleProjectForm })
 	);
 
-	const taskListElem = tasksDisplay();
+	const taskListElem = tasksDisplayElem();
 
-	addTasksTo(taskList, taskListElem);
+	addTasksTo({ tasks: taskList, target: taskListElem });
 
 	component.appendChild(taskListElem);
 
