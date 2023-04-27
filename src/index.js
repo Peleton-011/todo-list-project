@@ -8,6 +8,14 @@ import Header from "./components/Header";
 
 const taskList = [];
 
+function tasksDisplayElem() {
+	const taskListElem = document.createElement("section");
+	taskListElem.id = "taskList";
+	taskListElem.classList.add("container");
+
+	return taskListElem;
+}
+
 function removeTask(id) {
 	taskList.filter((currTask) => currTask.id !== id);
 	document.getElementById(id).remove();
@@ -24,7 +32,7 @@ function addTask({ taskTitle, description, dueDate, dueTime, priorityLevel }) {
 	taskList.push(newTask);
 	const taskListElem = document.getElementById("taskList");
 
-	taskListElem.appendChild(getTaskElem(newTask.getConfig()));
+	taskListElem.appendChild(newTask.getElem({onDel: removeTask}));
 }
 function addProject({
 	projectTitle,
@@ -46,80 +54,9 @@ function addProject({
 	taskListElem.appendChild(getProjectElem(newProject.getConfig()));
 }
 
-function tasksDisplayElem() {
-	const taskListElem = document.createElement("section");
-	taskListElem.id = "taskList";
-	taskListElem.classList.add("container");
 
-	return taskListElem;
-}
 
-function getRemoveBtn(id) {
-	const removeBtn = document.createElement("button");
-	document.createElement("button");
-	removeBtn.innerText = "x";
-	removeBtn.setAttribute(
-		"style",
-		`
-    width: 1.5rem;
-    height: 1.5rem;
-    display: inline-block;
-    text-align: center;
-    margin: 0;
-    padding: 0;`
-	);
-	removeBtn.onclick = (e) => {
-		removeTask(id);
-	};
-	return removeBtn;
-}
 
-function getTaskElem({ title, description, id }) {
-	const task = document.createElement("details");
-	task.id = id;
-	const summary = document.createElement("summary");
-	const summaryHeader = document.createElement("div");
-
-	summary.setAttribute(
-		"style",
-		`
-    display: flex;
-    align-items: center;
-`
-	);
-
-	summaryHeader.setAttribute(
-		"style",
-		`
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    `
-	);
-
-	const titleElem = document.createElement("h4");
-	titleElem.innerText = title;
-	titleElem.setAttribute(
-		"style",
-		`
-    margin-bottom: 0`
-	);
-
-	const descriptionElem = document.createElement("p");
-
-	descriptionElem.innerText = description;
-
-	const removeBtn = getRemoveBtn(id);
-
-	summaryHeader.appendChild(titleElem);
-	summaryHeader.appendChild(removeBtn);
-
-	summary.appendChild(summaryHeader);
-
-	task.appendChild(summary);
-	task.appendChild(descriptionElem);
-	return task;
-}
 
 function getProjectElem(ProjObj) {
 	const { title, description, id } = ProjObj;
@@ -173,7 +110,7 @@ function getProjectElem(ProjObj) {
 function addTasksTo({ tasks, target }) {
 	tasks
 		.filter((task) => task.type === "task")
-		.map((task) => getTaskElem(task))
+		.map((task) => task.getTaskElem({onDel: removeTask}))
 		.reduce((acc, task) => {
 			acc.appendChild(task);
 			return acc;
