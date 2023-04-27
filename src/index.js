@@ -13,11 +13,17 @@ function removeTask(id) {
 	document.getElementById(id).remove();
 }
 
-function addTask(config) {
-	taskList.push(new Task(config));
+function addTask({taskTitle, description, dueDate, dueTime, priorityLevel}) {
+    const taskInterface = {
+        title: taskTitle,
+        description: description,
+        priority: priorityLevel,
+        dueDate: [dueDate, dueTime],
+    }
+	taskList.push(new Task(taskInterface));
 	const taskListElem = document.getElementById("taskList");
 
-	taskListElem.appendChild(getTaskElem(config));
+	taskListElem.appendChild(getTaskElem(taskInterface));
 }
 
 function tasksDisplay() {
@@ -61,27 +67,22 @@ function addTasksTo(tasks, target) {
 		}, target);
 }
 
-const component = () => {
-	const component = document.createElement("main");
-	component.classList.add("container");
+function parseForm(id) {
+    const FD = new FormData(document.getElementById(id));
+		
+    const formObj = {};
 
-	const taskOnSubmit = (e) => {
+    for (const [name, value] of FD) {
+        formObj[name] = value;
+    }
+    return formObj;
+}
+
+function initializeTaskForm () {
+    const taskOnSubmit = (e) => {
 		e.preventDefault();
-		const FD = new FormData(document.querySelector("form"));
-		const [taskTitle, description, dueDate, dueTime, priorityLevel] = [
-			FD.get("taskTitle"),
-			FD.get("description"),
-			FD.get("dueDate"),
-			FD.get("dueTime"),
-			FD.get("priorityLevel"),
-		];
 
-		addTask({
-			title: taskTitle,
-			description: description,
-			priority: priorityLevel,
-			dueDate: [dueDate, dueTime],
-		});
+		addTask(parseForm("task-form"));
 
 		toggleTaskForm(e);
 	};
@@ -91,6 +92,15 @@ const component = () => {
 		content: getTaskForm(taskOnSubmit),
 		id: "taskForm",
 	});
+
+    return {taskForm, toggleTaskForm}
+}
+
+const component = () => {
+	const component = document.createElement("main");
+	component.classList.add("container");
+
+    const {taskForm, toggleTaskForm} = initializeTaskForm();
 
 	component.appendChild(taskForm);
 
@@ -113,7 +123,7 @@ document.body.appendChild(component());
 
 //FOR TESTING vvvv
 
-addTask({ title: "a", description: "b" });
-addTask({ title: "c", description: "d" });
+addTask({ taskTitle: "a", description: "b" });
+addTask({ taskTitle: "c", description: "d" });
 
 //FOR TESTING ^^^^
