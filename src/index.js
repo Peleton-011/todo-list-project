@@ -54,25 +54,57 @@ function tasksDisplayElem() {
 	return taskListElem;
 }
 
+function getRemoveBtn (id) {
+    const removeBtn = document.createElement("button");
+    document.createElement("button");
+	removeBtn.innerText = "x";
+    removeBtn.setAttribute("style", `
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    padding: 0;`)
+	removeBtn.onclick = (e) => {
+	    removeTask(id);
+	};
+    return removeBtn;
+}
+
 function getTaskElem({ title, description, id }) {
 	const task = document.createElement("details");
 	task.id = id;
-	const titleElem = document.createElement("summary");
+	const summary = document.createElement("summary");
+    const summaryHeader = document.createElement("div");
+
+    summary.setAttribute("style", `
+    display: flex;
+    align-items: center;
+`)
+
+    summaryHeader.setAttribute("style", `
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    `)
+
+    const titleElem = document.createElement("h4");
 	titleElem.innerText = title;
+    titleElem.setAttribute("style", `
+    margin-bottom: 0`)
 
 	const descriptionElem = document.createElement("p");
 
 	descriptionElem.innerText = description;
 
-	const removeBtn = document.createElement("button");
-	removeBtn.innerText = "X";
-	removeBtn.onclick = (e) => {
-		removeTask(id);
-	};
+	const removeBtn = getRemoveBtn(id);
 
-	titleElem.appendChild(removeBtn);
+    summaryHeader.appendChild(titleElem)
+	summaryHeader.appendChild(removeBtn);
 
-	task.appendChild(titleElem);
+    summary.appendChild(summaryHeader);
+
+	task.appendChild(summary);
 	task.appendChild(descriptionElem);
 	return task;
 }
@@ -87,11 +119,7 @@ function getProjectElem({ title, description, id}) {
 
 	descriptionElem.innerText = description;
 
-	const removeBtn = document.createElement("button");
-	removeBtn.innerText = "X";
-	removeBtn.onclick = (e) => {
-		removeTask(id);
-	};
+	const removeBtn = getRemoveBtn();
 
 	titleElem.appendChild(removeBtn);
 
