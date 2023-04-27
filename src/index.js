@@ -1,24 +1,16 @@
 import "@picocss/pico";
 
-import getTaskForm from "./components/taskForm";
-import getProjectForm from "./components/projectForm";
+import initializeForm from "./components/Form";
 import Task from "./logic/task";
 import Project from "./logic/project";
 
 import Header from "./components/Header";
-import PopUp from "./components/PopUp";
 
 const taskList = [];
 
 function removeTask(id) {
 	taskList.filter((currTask) => currTask.id !== id);
 	document.getElementById(id).remove();
-}
-
-function resetForm(id) {
-	const form = document.getElementById(id);
-    const elems = [...form.querySelectorAll("input"), form.querySelector("textarea")];
-    elems.filter((elem) => elem.type !== "submit").forEach((input) => (input.value = ""));
 }
 
 function addTask({ taskTitle, description, dueDate, dueTime, priorityLevel }) {
@@ -188,72 +180,25 @@ function addTasksTo({ tasks, target }) {
 		}, target);
 }
 
-function parseForm(id) {
-	const FD = new FormData(document.getElementById(id));
-
-	const formObj = {};
-
-	for (const [name, value] of FD) {
-		formObj[name] = value;
-	}
-	return formObj;
-}
-
-function initializeTaskForm() {
-	const taskOnSubmit = (e) => {
-		e.preventDefault();
-
-		addTask(parseForm("task-form"));
-
-		toggleTaskForm(e);
-	};
-
-	const [taskForm, toggleTaskForm] = PopUp({
-		title: "Add Task",
-		content: getTaskForm(taskOnSubmit),
-		id: "task-form-popup",
-	});
-
-	return {
-		taskForm,
-		toggleTaskForm: (e) => {
-			toggleTaskForm(e);
-			resetForm("task-form");
-		},
-	};
-}
-
-function initializeProjectForm() {
-	const projectOnSubmit = (e) => {
-		e.preventDefault();
-
-		addProject(parseForm("project-form"));
-
-		toggleProjectForm(e);
-	};
-
-	const [projectForm, toggleProjectForm] = PopUp({
-		title: "Add Project",
-		content: getProjectForm(projectOnSubmit),
-		id: "project-form-popup",
-	});
-
-	return {
-		projectForm,
-		toggleProjectForm: (e) => {
-			toggleProjectForm(e);
-			resetForm("project-form");
-		},
-	};
-}
-
 const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
 
 	//Forms
-	const { taskForm, toggleTaskForm } = initializeTaskForm();
-	const { projectForm, toggleProjectForm } = initializeProjectForm();
+	const [ taskForm, toggleTaskForm]  = initializeForm({
+		type: "task",
+		addFunction: addTask,
+		titlePlaceholder: "Get eggs for an omelette",
+		descriptionPlaceholder:
+			"Ask Danny if he has some, or go to the store to get them.",
+	});
+	const [ projectForm, toggleProjectForm ] = initializeForm({
+		type: "project",
+		addFunction: addProject,
+		titlePlaceholder: "Learn how to cook",
+		descriptionPlaceholder:
+			"Start by learning at least 5 different recipes to mix and match",
+	});
 
 	component.appendChild(taskForm);
 	component.appendChild(projectForm);

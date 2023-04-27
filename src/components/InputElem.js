@@ -40,13 +40,20 @@ function InputElem({
 		inputElem.setAttribute("required", "");
 	}
 
-	setAttrs(inputElem, [
-		...attrs,
-		["type", type],
-		["name", name],
-		["value", value],
-		["placeholder", placeholder],
-	]);
+	isTextArea
+		? setAttrs(inputElem, [
+				...attrs,
+				["name", name],
+				["value", value],
+				["placeholder", placeholder],
+		  ])
+		: setAttrs(inputElem, [
+				...attrs,
+				["type", type],
+				["name", name],
+				["value", value],
+				["placeholder", placeholder],
+		  ]);
 
 	elem.appendChild(inputElem);
 
