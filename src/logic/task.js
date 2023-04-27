@@ -13,6 +13,16 @@ class Task {
 		this.dueDate = dueDate || null;
 		this.id = newId();
 	}
+
+	getConfig() {
+		return {
+			title: this.title,
+			description: this.description,
+			priority: this.priority,
+			dueDate: this.dueDate,
+			id: this.id,
+		};
+	}
 }
 
 export default Task;
