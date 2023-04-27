@@ -65,9 +65,7 @@ const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
 
-    const onClose = ((e) => {
-        return 3
-    })
+
 
 	const taskOnSubmit = (e) => {
 		e.preventDefault();
@@ -87,23 +85,26 @@ const component = () => {
 			dueDate: [dueDate, dueTime],
 		});
 
-        onClose()
+		toggleTaskForm(e);
 	};
 
-	const onAddTask = () => {
-		const main = document.querySelector("main");
-		main.appendChild(PopUp({title: "Add Task", onClose: onClose, content: getTaskForm(taskOnSubmit)}));
-	};
+    const [taskForm, toggleTaskForm] = PopUp({
+        title: "Add Task",
+        content: getTaskForm(taskOnSubmit),
+        id: "taskForm",
+    })
+
+	component.appendChild(taskForm);
 
 	const onAddProject = () => {
 		return "cum";
 	};
 
-	component.appendChild(Header({ onAddTask, onAddProject }));
+	component.appendChild(Header({ onAddTask: toggleTaskForm, onAddProject }));
 
 	const taskListElem = tasksDisplay();
 
-    addTasksTo(taskList, taskListElem)
+	addTasksTo(taskList, taskListElem);
 
 	component.appendChild(taskListElem);
 
