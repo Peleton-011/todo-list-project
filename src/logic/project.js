@@ -12,6 +12,12 @@ class Project extends Task {
 	addTask(taskParams) {
 		this.taskList.push(new Task(taskParams));
 	}
+
+	getElem({ onDel }) {
+		const taskElem = super.getElem({ onDel });
+
+		return taskElem;
+	}
 }
 
 export default Project;

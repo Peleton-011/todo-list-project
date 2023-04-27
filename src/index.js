@@ -51,61 +51,9 @@ function addProject({
 	taskList.push(newProject);
 	const taskListElem = document.getElementById("taskList");
 
-	taskListElem.appendChild(getProjectElem(newProject.getConfig()));
+	taskListElem.appendChild(newProject.getElem({onDel: removeTask}));
 }
 
-
-
-
-
-function getProjectElem(ProjObj) {
-	const { title, description, id } = ProjObj;
-
-	const task = document.createElement("details");
-	task.id = id;
-	const summary = document.createElement("summary");
-	const summaryHeader = document.createElement("div");
-
-	summary.setAttribute(
-		"style",
-		`
-    display: flex;
-    align-items: center;
-`
-	);
-
-	summaryHeader.setAttribute(
-		"style",
-		`
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    `
-	);
-
-	const titleElem = document.createElement("h4");
-	titleElem.innerText = title;
-	titleElem.setAttribute(
-		"style",
-		`
-    margin-bottom: 0`
-	);
-
-	const descriptionElem = document.createElement("p");
-
-	descriptionElem.innerText = description;
-
-	const removeBtn = getRemoveBtn(id);
-
-	summaryHeader.appendChild(titleElem);
-	summaryHeader.appendChild(removeBtn);
-
-	summary.appendChild(summaryHeader);
-
-	task.appendChild(summary);
-	task.appendChild(descriptionElem);
-	return task;
-}
 
 function addTasksTo({ tasks, target }) {
 	tasks
