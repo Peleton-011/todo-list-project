@@ -13,13 +13,13 @@ function removeTask(id) {
 	document.getElementById(id).remove();
 }
 
-function addTask({taskTitle, description, dueDate, dueTime, priorityLevel}) {
-    const taskInterface = {
-        title: taskTitle,
-        description: description,
-        priority: priorityLevel,
-        dueDate: [dueDate, dueTime],
-    }
+function addTask({ taskTitle, description, dueDate, dueTime, priorityLevel }) {
+	const taskInterface = {
+		title: taskTitle,
+		description: description,
+		priority: priorityLevel,
+		dueDate: [dueDate, dueTime],
+	};
 	taskList.push(new Task(taskInterface));
 	const taskListElem = document.getElementById("taskList");
 
@@ -68,18 +68,18 @@ function addTasksTo(tasks, target) {
 }
 
 function parseForm(id) {
-    const FD = new FormData(document.getElementById(id));
-		
-    const formObj = {};
+	const FD = new FormData(document.getElementById(id));
 
-    for (const [name, value] of FD) {
-        formObj[name] = value;
-    }
-    return formObj;
+	const formObj = {};
+
+	for (const [name, value] of FD) {
+		formObj[name] = value;
+	}
+	return formObj;
 }
 
-function initializeTaskForm () {
-    const taskOnSubmit = (e) => {
+function initializeTaskForm() {
+	const taskOnSubmit = (e) => {
 		e.preventDefault();
 
 		addTask(parseForm("task-form"));
@@ -90,25 +90,45 @@ function initializeTaskForm () {
 	const [taskForm, toggleTaskForm] = PopUp({
 		title: "Add Task",
 		content: getTaskForm(taskOnSubmit),
-		id: "taskForm",
+		id: "task-form-popup",
 	});
 
-    return {taskForm, toggleTaskForm}
+	return { taskForm, toggleTaskForm };
+}
+
+function initializeProjectForm() {
+    const projectOnSubmit = (e) => {
+		e.preventDefault();
+
+		addTask(parseForm("project-form"));
+
+		toggleProjectForm(e);
+	};
+
+	const [ projectForm, toggleProjectForm ] = PopUp({
+		title: "Add Project",
+		content: getTaskForm(projectOnSubmit),
+		id: "project-form-popup",
+	});
+
+	return { projectForm, toggleProjectForm };
 }
 
 const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
 
-    const {taskForm, toggleTaskForm} = initializeTaskForm();
+    //Forms
+	const { taskForm, toggleTaskForm } = initializeTaskForm();
+	const { projectForm, toggleProjectForm } = initializeProjectForm();
 
 	component.appendChild(taskForm);
+	component.appendChild(projectForm);
 
-	const onAddProject = () => {
-		return "cum";
-	};
-
-	component.appendChild(Header({ onAddTask: toggleTaskForm, onAddProject }));
+    //Header (With form activation included)
+	component.appendChild(
+		Header({ onAddTask: toggleTaskForm, onAddProject: toggleProjectForm })
+	);
 
 	const taskListElem = tasksDisplay();
 
