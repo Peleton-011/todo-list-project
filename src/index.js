@@ -16,16 +16,17 @@ function removeTask(id) {
 }
 
 function addTask({ taskTitle, description, dueDate, dueTime, priorityLevel }) {
-	const taskInterface = {
-		title: taskTitle,
+    const taskInterface = {
+        title: taskTitle,
 		description: description,
 		priority: priorityLevel,
 		dueDate: [dueDate, dueTime],
 	};
-	taskList.push(new Task(taskInterface));
+    const newTask = new Task(taskInterface);
+	taskList.push(newTask);
 	const taskListElem = document.getElementById("taskList");
 
-	taskListElem.appendChild(getTaskElem(taskInterface));
+	taskListElem.appendChild(getTaskElem(newTask.getConfig()));
 }
 function addProject({
 	projectTitle,
@@ -40,10 +41,11 @@ function addProject({
 		priority: priorityLevel,
 		dueDate: [dueDate, dueTime],
 	};
-	taskList.push(new Project(projectInterface));
+    const newProject = new Project(projectInterface);
+	taskList.push(newProject);
 	const taskListElem = document.getElementById("taskList");
 
-	taskListElem.appendChild(getProjectElem(projectInterface));
+	taskListElem.appendChild(getProjectElem(newProject.getConfig()));
 }
 
 function tasksDisplayElem() {
