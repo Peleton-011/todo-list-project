@@ -2,23 +2,25 @@ import InputElem from "./InputElem";
 
 import SliderElem from "./slider";
 
+//To-Do: make a general form element instead of two separate ones
+
 function addChildren(target, source) {
 	const children = [...source.childNodes];
 	children.forEach((child) => target.appendChild(child));
 }
 
-function getTaskForm(onSubmitFunc) {
+function getProjectForm(onSubmitFunc) {
 	const form = document.createElement("form");
 	form.classList.add("container");
 
-	form.id = "task-form";
+	form.id = "project-form";
 
 	const title = InputElem({
 		id: "title",
 		type: "text",
-		label: "Task title",
-		name: "taskTitle",
-		placeholder: "Get eggs for an omelette",
+		label: "Project title",
+		name: "projectTitle",
+		placeholder: "Learn to cook",
 		required: true,
 	});
 
@@ -28,10 +30,10 @@ function getTaskForm(onSubmitFunc) {
 		label: "Description",
 		name: "description",
 		placeholder:
-			"Ask Danny if he has some, or go to the store to get them.",
+			"Start by learning at least 5 different recipes to mix and match",
 		attrs: [
 			["rows", 4],
-			["form", "task-form"],
+			["form", "project-form"],
 		],
 	});
 
@@ -66,7 +68,7 @@ function getTaskForm(onSubmitFunc) {
 		steps: [10, 20, 30, 40, 50, 60, 70, 80, 90],
 	});
 
-	const submit = InputElem({ type: "submit", value: "Add Task" });
+	const submit = InputElem({ type: "submit", value: "Add Project" });
 
 	addChildren(form, title);
 	addChildren(form, description);
@@ -95,4 +97,4 @@ function getTaskForm(onSubmitFunc) {
     */
 }
 
-export default getTaskForm;
+export default getProjectForm;

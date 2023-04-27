@@ -1,18 +1,17 @@
-
-import { prototype } from 'html-webpack-plugin';
-import Task from './Task';
+import Task from "./task";
 
 class Project extends Task {
-    
-    constructor(params) {
-        super(params);
+	type = "project";
 
-        this.taskList = [];
-    }
+	constructor(params) {
+		super(params);
 
-    addTask(taskParams) {
-        this.taskList.push(new Task(taskParams));
-    }
+		this.taskList = [];
+	}
+
+	addTask(taskParams) {
+		this.taskList.push(new Task(taskParams));
+	}
 }
 
 export default Project;
