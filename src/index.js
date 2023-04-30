@@ -11,7 +11,45 @@ function tasksDisplayElem() {
 	taskListElem.id = "taskList";
 	taskListElem.classList.add("container");
 
+	const config = { childList: true, subtree: true };
+
+	const callback = (mutationList, observer) => {
+		for (const mutation of mutationList) {
+			if (
+				taskListElem.childNodes.length > 2 &&
+				taskListElem.innerText !== ""
+			) {
+				taskListElem.innerText = "";
+			} else if (
+				!(taskListElem.childNodes.length > 2) &&
+				taskListElem.innerText !== "No tasks or projects found"
+			) {
+				taskListElem.innerText = "No tasks or projects found";
+			}
+		}
+	};
+
+	// Create an observer instance linked to the callback function
+	const observer = new MutationObserver(callback);
+
+	// Start observing the target node for configured mutations
+	observer.observe(taskListElem, config);
+
 	return taskListElem;
+}
+
+function getMainContent(mainProject) {
+	const mainProjectElement = mainProject.getElem();
+
+	const content = mainProjectElement.querySelector("details > p");
+
+	content.innerText = "";
+
+	const wrapper = document.createElement("div");
+
+	content.childNodes.forEach((elem) => wrapper.appendChild(elem));
+
+	return wrapper;
 }
 
 const component = () => {
@@ -47,8 +85,11 @@ const component = () => {
 	const taskListElem = tasksDisplayElem();
 
 	// addTasksTo({ tasks: taskList, target: taskListElem });
+	getMainContent(mainProject).childNodes.forEach((elem) => {
+		taskListElem.appendChild(elem);
+	});
 
-	taskListElem.appendChild(mainProject.getElem());
+	console.log(getMainContent(mainProject));
 
 	component.appendChild(taskListElem);
 
