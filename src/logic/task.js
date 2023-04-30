@@ -5,18 +5,15 @@ function newId() {
 }
 class Task {
 	type = "task";
+	#removeTask;
 
-	constructor({ title, description, priority, dueDate, id }) {
+	constructor({ title, description, priority, dueDate, id, removeTask }) {
 		this.title = title || "Unnamed Task";
 		this.description = description || "No description available";
 		this.priority = priority || 5;
 		this.dueDate = dueDate || null;
-		this.id = newId();
-	}
-
-    removeTask(id) {
-		this.taskList.filter((currTask) => currTask.id !== id);
-		document.getElementById(id).remove();
+		this.id = id || newId();
+		this.#removeTask = removeTask;
 	}
 
 	getConfig() {
@@ -44,7 +41,7 @@ class Task {
         padding: 0;`
 		);
 		removeBtn.onclick = (e) => {
-			removeTask(this.id);
+			this.#removeTask(this.id);
 		};
 		return removeBtn;
 	}
@@ -52,6 +49,7 @@ class Task {
 	getElem() {
 		const task = document.createElement("details");
 		task.id = this.id;
+		console.log(task);
 		const summary = document.createElement("summary");
 		const summaryHeader = document.createElement("div");
 
@@ -73,7 +71,7 @@ class Task {
 		);
 
 		const titleElem = document.createElement("h4");
-		titleElem.innerText = this.title;
+		titleElem.innerText = this.title || "No title available";
 		titleElem.setAttribute(
 			"style",
 			`
@@ -82,7 +80,8 @@ class Task {
 
 		const descriptionElem = document.createElement("p");
 
-		descriptionElem.innerText = this.description;
+		descriptionElem.innerText =
+			this.description || "No description available";
 
 		const removeBtn = this.getRemoveBtn();
 
@@ -90,9 +89,15 @@ class Task {
 		summaryHeader.appendChild(removeBtn);
 
 		summary.appendChild(summaryHeader);
+		console.log(task);
 
 		task.appendChild(summary);
+
+		console.log(task);
+
 		task.appendChild(descriptionElem);
+		console.log(task);
+
 		return task;
 	}
 }

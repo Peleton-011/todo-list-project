@@ -45,11 +45,19 @@ function getMainContent(mainProject) {
 
 	content.innerText = "";
 
-	const wrapper = document.createElement("div");
+	const wrapper = [];
 
-	content.childNodes.forEach((elem) => wrapper.appendChild(elem));
+	content.childNodes.forEach((elem) => wrapper.push(elem));
 
 	return wrapper;
+}
+
+function updateMainContent(mainProject, taskListElem) {
+	taskListElem.childNodes.forEach((n) => n.remove());
+    console.warn(getMainContent(mainProject));
+	getMainContent(mainProject).forEach((element) => {
+		taskListElem.appendChild(element);
+	});
 }
 
 const component = () => {
@@ -58,17 +66,25 @@ const component = () => {
 	const component = document.createElement("main");
 	component.classList.add("container");
 
+	const taskListElem = tasksDisplayElem();
+
 	//Forms
 	const [taskForm, toggleTaskForm] = initializeForm({
 		type: "task",
-		addFunction: mainProject.addTask,
+		addFunction: (args) => {
+			mainProject.addTask(args);
+			updateMainContent(mainProject, taskListElem);
+		},
 		titlePlaceholder: "Get eggs for an omelette",
 		descriptionPlaceholder:
 			"Ask Danny if he has some, or go to the store to get them.",
 	});
 	const [projectForm, toggleProjectForm] = initializeForm({
 		type: "project",
-		addFunction: mainProject.addProject,
+		addFunction: (args) => {
+			mainProject.addProject(args);
+			updateMainContent(mainProject, taskListElem);
+		},
 		titlePlaceholder: "Learn how to cook",
 		descriptionPlaceholder:
 			"Start by learning at least 5 different recipes to mix and match",
@@ -82,16 +98,11 @@ const component = () => {
 		Header({ onAddTask: toggleTaskForm, onAddProject: toggleProjectForm })
 	);
 
-	const taskListElem = tasksDisplayElem();
-
 	// addTasksTo({ tasks: taskList, target: taskListElem });
-	getMainContent(mainProject).childNodes.forEach((elem) => {
-		taskListElem.appendChild(elem);
-	});
-
-	console.log(getMainContent(mainProject));
-
+    
 	component.appendChild(taskListElem);
+    
+	updateMainContent(mainProject, taskListElem);
 
 	return component;
 };

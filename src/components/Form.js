@@ -133,16 +133,17 @@ function initializeForm({
 	addFunction,
 	titlePlaceholder,
 	descriptionPlaceholder,
+	id,
 }) {
 	const lowerType = type.toLowerCase();
 	const capitalizedType = lowerType[0].toUpperCase() + lowerType.slice(1);
 
 	const onSubmitFunc = (e) => {
 		e.preventDefault();
-
-		addFunction(parseForm(`${lowerType}-form`));
-
+        
 		toggleForm(e);
+        
+		addFunction(parseForm(`${lowerType}-form`));
 	};
 
 	const [form, toggleForm] = PopUp({
@@ -153,7 +154,7 @@ function initializeForm({
 			titlePlaceholder,
 			descriptionPlaceholder,
 		}),
-		id: `${lowerType}-form-popup`,
+		id: id || `${lowerType}-form-popup`,
 	});
 
 	return [
