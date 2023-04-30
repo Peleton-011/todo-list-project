@@ -14,6 +14,11 @@ class Task {
 		this.id = newId();
 	}
 
+    removeTask(id) {
+		this.taskList.filter((currTask) => currTask.id !== id);
+		document.getElementById(id).remove();
+	}
+
 	getConfig() {
 		return {
 			title: this.title,
@@ -23,7 +28,8 @@ class Task {
 			id: this.id,
 		};
 	}
-	getRemoveBtn({onDel}) {
+
+	getRemoveBtn() {
 		const removeBtn = document.createElement("button");
 		document.createElement("button");
 		removeBtn.innerText = "x";
@@ -38,12 +44,12 @@ class Task {
         padding: 0;`
 		);
 		removeBtn.onclick = (e) => {
-			onDel(this.id);
+			removeTask(this.id);
 		};
 		return removeBtn;
 	}
 
-	getElem({onDel}) {
+	getElem() {
 		const task = document.createElement("details");
 		task.id = this.id;
 		const summary = document.createElement("summary");
@@ -78,7 +84,7 @@ class Task {
 
 		descriptionElem.innerText = this.description;
 
-		const removeBtn = this.getRemoveBtn({onDel});
+		const removeBtn = this.getRemoveBtn();
 
 		summaryHeader.appendChild(titleElem);
 		summaryHeader.appendChild(removeBtn);

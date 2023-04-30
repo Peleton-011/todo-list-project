@@ -13,11 +13,6 @@ class Project extends Task {
 		this.addProject = this.addProject.bind(this);
 	}
 
-	removeTask(id) {
-		this.taskList.filter((currTask) => currTask.id !== id);
-		document.getElementById(id).remove();
-	}
-
 	addTask({ taskTitle, description, dueDate, dueTime, priorityLevel }) {
 		const taskInterface = {
 			title: taskTitle,
@@ -29,7 +24,7 @@ class Project extends Task {
 		this.taskList.push(newTask);
 		const taskListElem = document.getElementById("taskList");
 
-		taskListElem.appendChild(newTask.getElem({ onDel: this.removeTask }));
+		taskListElem.appendChild(newTask.getElem());
 	}
 
 	addProject({ projectTitle, description, dueDate, dueTime, priorityLevel }) {
@@ -44,19 +39,19 @@ class Project extends Task {
 		const taskListElem = document.getElementById("taskList");
 
 		taskListElem.appendChild(
-			newProject.getElem({ onDel: this.removeTask })
+			newProject.getElem()
 		);
 	}
 
 	getElem() {
-		const taskElem = super.getElem({ onDel: this.removeTask });
+		const taskElem = super.getElem();
 
 		const content = taskElem.querySelector("details > p");
 
 		//Inner tasks and such
 
 		this.taskList
-			.map((task) => task.getElem({ onDel: this.removeTask }))
+			.map((task) => task.getElem())
 			.reduce((acc, task) => {
 				acc.appendChild(task);
 				return acc;
