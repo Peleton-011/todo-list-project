@@ -54,14 +54,42 @@ function getMainContent(mainProject) {
 
 function updateMainContent(mainProject, taskListElem) {
 	taskListElem.childNodes.forEach((n) => n.remove());
-    console.warn(getMainContent(mainProject));
+	console.warn(getMainContent(mainProject));
 	getMainContent(mainProject).forEach((element) => {
 		taskListElem.appendChild(element);
 	});
 }
 
+function form({ type, targetProject, taskListElem }) {
+	const [titlePlaceholder, descriptionPlaceholder] =
+		type === "project"
+			? //For projects
+			  [
+					"Learn how to cook",
+					"Start by learning at least 5 different recipes to mix and match",
+			  ]
+			: //For tasks
+			  [
+					"Get eggs for an omelette",
+					"Ask Danny if he has some, or go to the store to get them.",
+			  ];
+	const config = {
+		type,
+		titlePlaceholder,
+		descriptionPlaceholder,
+		addFunction: (args) => {
+			targetProject.handleAdd(args);
+			updateMainContent(targetProject, taskListElem);
+		},
+	};
+	return initializeForm(config);
+}
+
 const component = () => {
 	const mainProject = new Project({ title: "main" });
+
+	mainProject.addTask({ taskTitle: "Test1" });
+	mainProject.addProject({ projectTitle: "Test2" });
 
 	const component = document.createElement("main");
 	component.classList.add("container");
@@ -69,25 +97,19 @@ const component = () => {
 	const taskListElem = tasksDisplayElem();
 
 	//Forms
-	const [taskForm, toggleTaskForm] = initializeForm({
-		type: "task",
-		addFunction: (args) => {
-			mainProject.addTask(args);
-			updateMainContent(mainProject, taskListElem);
-		},
-		titlePlaceholder: "Get eggs for an omelette",
-		descriptionPlaceholder:
-			"Ask Danny if he has some, or go to the store to get them.",
+
+	const formConfig = {
+		targetProject: mainProject,
+		taskListElem: taskListElem,
+	};
+
+	const [taskForm, toggleTaskForm] = form({
+		type: "taskList",
+		...formConfig,
 	});
-	const [projectForm, toggleProjectForm] = initializeForm({
+	const [projectForm, toggleProjectForm] = form({
 		type: "project",
-		addFunction: (args) => {
-			mainProject.addProject(args);
-			updateMainContent(mainProject, taskListElem);
-		},
-		titlePlaceholder: "Learn how to cook",
-		descriptionPlaceholder:
-			"Start by learning at least 5 different recipes to mix and match",
+		...formConfig,
 	});
 
 	component.appendChild(taskForm);
@@ -99,9 +121,9 @@ const component = () => {
 	);
 
 	// addTasksTo({ tasks: taskList, target: taskListElem });
-    
+
 	component.appendChild(taskListElem);
-    
+
 	updateMainContent(mainProject, taskListElem);
 
 	return component;

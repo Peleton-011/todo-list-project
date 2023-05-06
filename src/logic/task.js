@@ -49,7 +49,6 @@ class Task {
 	getElem() {
 		const task = document.createElement("details");
 		task.id = this.id;
-		console.log(task);
 		const summary = document.createElement("summary");
 		const summaryHeader = document.createElement("div");
 

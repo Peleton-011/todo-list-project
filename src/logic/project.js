@@ -13,6 +13,14 @@ class Project extends Task {
 		this.addProject = this.addProject;
 	}
 
+	handleAdd(config) {
+		if (config.type === "project") {
+			this.addProject(config);
+			return;
+		}
+		this.addTask(config);
+	}
+
 	removeTask(id) {
 		this.taskList.filter((currTask) => currTask.id !== id);
 		document.getElementById(id).remove();
@@ -43,6 +51,12 @@ class Project extends Task {
 
 	getContent() {
 		const content = this.taskList.map((task) => task.getElem());
+		if (content.length < 1) {
+			const noContent = document.createElement("p");
+			noContent.innerText = "No tasks found.";
+			content.push(noContent);
+		}
+		content.push(this.getButtons());
 		return content;
 	}
 
@@ -104,29 +118,15 @@ class Project extends Task {
 	getElem() {
 		const taskElem = super.getElem();
 
-
 		const content = taskElem.querySelector("p");
+
+		console.log("content", content);
 
 		//Inner tasks and such
 
-		console.log(this.getContent());
-		this.getContent().reduce((acc, curr) => {
-			acc.appendChild(curr);
-		}, content);
-
-		const btns = this.getButtons();
-
-		content.appendChild(btns);
-
-		// const btn = document.createElement("button");
-		// btn.innerText = "Add Task";
-		// btn.addEventListener("click", onClick);
-		// btn.setAttribute("role", "button");
-		// btn.setAttribute(
-		//     "style",
-		//     `width: fit-content;
-		// height: fit-content;`
-		// );
+		this.getContent().forEach((elem) => {
+			content.appendChild(elem);
+		});
 
 		taskElem.appendChild(content);
 
