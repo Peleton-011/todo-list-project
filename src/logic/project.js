@@ -57,7 +57,14 @@ class Project extends Task {
 			content.push(noContent);
 		}
 		content.push(this.getButtons());
-		return content;
+
+        const result = document.createElement("p");
+		//Inner tasks and such
+
+		content.forEach((elem) => {
+			result.appendChild(elem);
+		});
+		return result;
 	}
 
 	getButtons() {
@@ -118,17 +125,12 @@ class Project extends Task {
 	getElem() {
 		const taskElem = super.getElem();
 
-		const content = taskElem.querySelector("p");
+        const content = this.getContent();
 
-		console.log("content", content);
+        const oldContent = taskElem.querySelector("p");
 
-		//Inner tasks and such
-
-		this.getContent().forEach((elem) => {
-			content.appendChild(elem);
-		});
-
-		taskElem.appendChild(content);
+		taskElem.insertBefore(content, oldContent);
+        taskElem.removeChild(oldContent);
 
 		return taskElem;
 	}

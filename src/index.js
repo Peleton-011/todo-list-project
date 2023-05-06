@@ -6,6 +6,21 @@ import Project from "./logic/project";
 
 import Header from "./components/Header";
 
+function parseForm(id) {
+	const FD = new FormData(document.getElementById(id));
+	const formObj = {};
+
+	for (const [name, value] of FD) {
+		formObj[name] = formObj[name] || value;
+	}
+	return formObj;
+}
+
+const getAddFunction = (type, target) => (id) => {
+	const formData = parseForm(id);
+	target.handleAdd({ ...formData, type });
+};
+
 function tasksDisplayElem() {
 	const taskListElem = document.createElement("section");
 	taskListElem.id = "taskList";
@@ -38,28 +53,6 @@ function tasksDisplayElem() {
 	return taskListElem;
 }
 
-function getMainContent(mainProject) {
-	const mainProjectElement = mainProject.getElem();
-
-	const content = mainProjectElement.querySelector("details > p");
-
-	content.innerText = "";
-
-	const wrapper = [];
-
-	content.childNodes.forEach((elem) => wrapper.push(elem));
-
-	return wrapper;
-}
-
-function updateMainContent(mainProject, taskListElem) {
-	taskListElem.childNodes.forEach((n) => n.remove());
-	console.warn(getMainContent(mainProject));
-	getMainContent(mainProject).forEach((element) => {
-		taskListElem.appendChild(element);
-	});
-}
-
 function form({ type, targetProject, taskListElem }) {
 	const [titlePlaceholder, descriptionPlaceholder] =
 		type === "project"
@@ -77,10 +70,6 @@ function form({ type, targetProject, taskListElem }) {
 		type,
 		titlePlaceholder,
 		descriptionPlaceholder,
-		addFunction: (args) => {
-			targetProject.handleAdd(args);
-			updateMainContent(targetProject, taskListElem);
-		},
 	};
 	return initializeForm(config);
 }
@@ -117,7 +106,12 @@ const component = () => {
 
 	//Header (With form activation included)
 	component.appendChild(
-		Header({ onAddTask: toggleTaskForm, onAddProject: toggleProjectForm })
+		Header({
+			onAddTask: toggleTaskForm(getAddFunction("task", mainProject)),
+			onAddProject: toggleProjectForm(
+				getAddFunction("project", mainProject)
+			),
+		})
 	);
 
 	// addTasksTo({ tasks: taskList, target: taskListElem });

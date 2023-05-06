@@ -9,12 +9,7 @@ function addChildren(target, source) {
 	children.forEach((child) => target.appendChild(child));
 }
 
-function getForm({
-	type,
-	onSubmitFunc,
-	titlePlaceholder,
-	descriptionPlaceholder,
-}) {
+function getForm({ type, titlePlaceholder, descriptionPlaceholder }) {
 	const lowerType = type.toLowerCase();
 	const capitalizedType = lowerType[0].toUpperCase() + lowerType.slice(1);
 
@@ -87,8 +82,6 @@ function getForm({
 	addChildren(form, priority);
 	addChildren(form, submit);
 
-	form.onsubmit = onSubmitFunc;
-
 	return form;
 
 	/*
@@ -118,19 +111,8 @@ function resetForm(id) {
 		.forEach((input) => (input.value = ""));
 }
 
-function parseForm(id) {
-	const FD = new FormData(document.getElementById(id));
-	const formObj = {};
-
-	for (const [name, value] of FD) {
-		formObj[name] = formObj[name] || value;
-	}
-	return formObj;
-}
-
 function initializeForm({
 	type,
-	addFunction,
 	titlePlaceholder,
 	descriptionPlaceholder,
 	id,
@@ -138,19 +120,17 @@ function initializeForm({
 	const lowerType = type.toLowerCase();
 	const capitalizedType = lowerType[0].toUpperCase() + lowerType.slice(1);
 
-	const onSubmitFunc = (e) => {
+	const getOnSubmitFunc = (onSubmit) => (e) => {
 		e.preventDefault();
-        
+		onSubmit(e);
+		resetForm(`${lowerType}-form`);
 		toggleForm(e);
-        
-		addFunction(parseForm(`${lowerType}-form`));
 	};
 
 	const [form, toggleForm] = PopUp({
 		title: `Add ${capitalizedType}`,
 		content: getForm({
 			type,
-			onSubmitFunc,
 			titlePlaceholder,
 			descriptionPlaceholder,
 		}),
@@ -159,9 +139,12 @@ function initializeForm({
 
 	return [
 		form,
-		(e) => {
-			toggleForm(e);
-			resetForm(`${lowerType}-form`);
+		(onSubmit) => {
+			const form = document.getElementById(`${lowerType}-form`);
+
+			form.onsubmit = getOnSubmitFunc(onSubmit);
+
+			toggleForm();
 		},
 	];
 }
