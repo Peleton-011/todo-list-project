@@ -107,8 +107,8 @@ const component = () => {
 	//Header (With form activation included)
 	component.appendChild(
 		Header({
-			onAddTask: toggleTaskForm(getAddFunction("task", mainProject)),
-			onAddProject: toggleProjectForm(
+			onAddTask: (e) => toggleTaskForm(e, getAddFunction("task", mainProject)),
+			onAddProject: (e) => toggleProjectForm(e, 
 				getAddFunction("project", mainProject)
 			),
 		})
@@ -118,7 +118,6 @@ const component = () => {
 
 	component.appendChild(taskListElem);
 
-	updateMainContent(mainProject, taskListElem);
 
 	return component;
 };
