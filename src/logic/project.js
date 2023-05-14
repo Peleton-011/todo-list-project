@@ -35,11 +35,10 @@ class Project extends Task {
 			priority: priorityLevel,
 			dueDate: [dueDate, dueTime],
 			removeTask: this.removeTask.bind(this),
-            parent: this
+			parent: this,
 		};
 		const newTask = new Task(taskInterface);
 		this.taskList.push(newTask);
-
 	}
 
 	addProject({ projectTitle, description, dueDate, dueTime, priorityLevel }) {
@@ -124,6 +123,22 @@ class Project extends Task {
 		btns.appendChild(addProject);
 
 		return btns;
+	}
+
+	addTaskElem(input) {
+		if (typeof input === "number") {
+			input = this.taskList[input];
+		}
+		const target = this.getDomObject;
+		if (!target) {
+			console.error("Element " + this.id + " is not in the DOM");
+			return;
+		}
+		target.appendChild(input.getElem());
+	}
+
+	getDomObject() {
+		return (domObj = document.getElementById(this.id));
 	}
 
 	getElem() {
