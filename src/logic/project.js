@@ -20,7 +20,16 @@ class Project extends Task {
 			return;
 		}
 		console.log("Task added ", config, " to ", this.id);
+		config = this.reformat(config);
 		this.addTask(config);
+	}
+
+	reformat(config) {
+		const newConfig = { taskTitle: config.tasklistTitle, ...config };
+
+		console.log(newConfig);
+
+		return newConfig;
 	}
 
 	removeTask(id) {
@@ -130,18 +139,18 @@ class Project extends Task {
 			if (input < 0) {
 				input += this.taskList.length;
 			}
-            console.log(input)
+			console.log(input);
 
-            console.log(this.taskList)
+			console.log(this.taskList);
 			input = this.taskList[input];
-            console.log(input);
+			console.log(input);
 		}
 		const parent = this.getDomObject();
 		if (!parent) {
 			console.error("Element " + this.id + " is not in the DOM");
 			return;
 		}
-        const target = parent.querySelector("p:nth-of-type(2)")
+		const target = parent.querySelector("p:nth-of-type(2)");
 		target.appendChild(input.getElem());
 	}
 
