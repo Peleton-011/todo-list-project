@@ -11,11 +11,11 @@ import Header from "./components/Header";
 const getAddFunction = (type, target) => {
 	function parseForm(form) {
 		const FD = new FormData(form);
-        const description = form.querySelector("textarea")
+		const description = form.querySelector("textarea");
 		const formObj = {};
-        if (description) formObj.description = description.value;
+		if (description) formObj.description = description.value;
 
-        console.log(FD)
+		console.log(FD);
 
 		for (const [name, value] of FD) {
 			formObj[name] = formObj[name] || value;
@@ -27,7 +27,7 @@ const getAddFunction = (type, target) => {
 		const form = e.target;
 		const formData = parseForm(form);
 		target.handleAdd({ ...formData, type });
-        target.addTaskElem(-1)
+		target.addTaskElem(-1);
 	};
 };
 
@@ -37,7 +37,7 @@ function tasksDisplayElem() {
 	taskListElem.classList.add("container");
 
 	const config = { childList: true, subtree: true };
-/*
+	/*
 	const callback = (mutationList, observer) => {
 		for (const mutation of mutationList) {
 			if (
@@ -64,7 +64,7 @@ function tasksDisplayElem() {
 	return taskListElem;
 }
 
-function form({ type, targetProject, taskListElem }) {
+function form({ type }) {
 	const [titlePlaceholder, descriptionPlaceholder] =
 		type === "project"
 			? //For projects
@@ -116,12 +116,14 @@ const component = () => {
 	component.appendChild(projectForm);
 
 	//Header (With form activation included)
+
+	const taskOnSubmit = getAddFunction("task", mainProject);
+	const projectOnSubmit = getAddFunction("project", mainProject);
+
 	component.appendChild(
 		Header({
-			onAddTask: (e) =>
-				toggleTaskForm(e, getAddFunction("task", mainProject)),
-			onAddProject: (e) =>
-				toggleProjectForm(e, getAddFunction("project", mainProject)),
+			onAddTask: (e) => toggleTaskForm(e, taskOnSubmit),
+			onAddProject: (e) => toggleProjectForm(e, projectOnSubmit),
 		})
 	);
 
@@ -131,7 +133,7 @@ const component = () => {
 
 	// component.appendChild(taskListElem);
 
-    component.appendChild(content);
+	component.appendChild(content);
 
 	return component;
 };
