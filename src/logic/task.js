@@ -79,6 +79,8 @@ class Task {
 
 		const descriptionElem = document.createElement("p");
 
+        descriptionElem.id = "description-" + this.id;
+
 		descriptionElem.innerText =
 			this.description || "No description available";
 

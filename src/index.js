@@ -123,7 +123,7 @@ const component = () => {
 
 	// addTasksTo({ tasks: taskList, target: taskListElem });
 
-	const content = mainProject.getElem();
+	const content = mainProject.getContent();
 
 	// component.appendChild(taskListElem);
 

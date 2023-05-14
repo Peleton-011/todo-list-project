@@ -71,6 +71,8 @@ class Project extends Task {
 		content.push(this.getButtons());
 
 		const result = document.createElement("p");
+
+        result.id = "tasklist-" + this.id;
 		//Inner tasks and such
 
 		content.forEach((elem) => {
@@ -145,17 +147,16 @@ class Project extends Task {
 			input = this.taskList[input];
 			console.log(input);
 		}
-		const parent = this.getDomObject();
-		if (!parent) {
+		const target = this.getDomObject();
+		if (!target) {
 			console.error("Element " + this.id + " is not in the DOM");
 			return;
 		}
-		const target = parent.querySelector("p:nth-of-type(2)");
 		target.appendChild(input.getElem());
 	}
 
 	getDomObject() {
-		return document.getElementById(this.id);
+		return document.getElementById("tasklist-" + this.id);
 	}
 
 	getElem() {
