@@ -25,6 +25,7 @@ class Project extends Task {
 	}
 
 	reformat(config) {
+        console.log(config)
 		const newConfig = { taskTitle: config.tasklistTitle, ...config };
 
 		console.log(newConfig);

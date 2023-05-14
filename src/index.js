@@ -11,7 +11,11 @@ import Header from "./components/Header";
 const getAddFunction = (type, target) => {
 	function parseForm(form) {
 		const FD = new FormData(form);
+        const description = form.querySelector("textarea")
 		const formObj = {};
+        if (description) formObj.description = description.value;
+
+        console.log(FD)
 
 		for (const [name, value] of FD) {
 			formObj[name] = formObj[name] || value;
