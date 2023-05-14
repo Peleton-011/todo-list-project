@@ -16,8 +16,10 @@ class Project extends Task {
 	handleAdd(config) {
 		if (config.type === "project") {
 			this.addProject(config);
+			console.log("Project added ", config, " to ", this.id);
 			return;
 		}
+		console.log("Task added ", config, " to ", this.id);
 		this.addTask(config);
 	}
 
@@ -33,9 +35,11 @@ class Project extends Task {
 			priority: priorityLevel,
 			dueDate: [dueDate, dueTime],
 			removeTask: this.removeTask.bind(this),
+            parent: this
 		};
 		const newTask = new Task(taskInterface);
 		this.taskList.push(newTask);
+
 	}
 
 	addProject({ projectTitle, description, dueDate, dueTime, priorityLevel }) {
@@ -58,7 +62,7 @@ class Project extends Task {
 		}
 		content.push(this.getButtons());
 
-        const result = document.createElement("p");
+		const result = document.createElement("p");
 		//Inner tasks and such
 
 		content.forEach((elem) => {
@@ -125,12 +129,12 @@ class Project extends Task {
 	getElem() {
 		const taskElem = super.getElem();
 
-        const content = this.getContent();
+		const content = this.getContent();
 
-        const oldContent = taskElem.querySelector("p");
+		// const oldContent = taskElem.querySelector("p");
 
-		taskElem.insertBefore(content, oldContent);
-        taskElem.removeChild(oldContent);
+		taskElem.appendChild(content);
+		// taskElem.removeChild(oldContent);
 
 		return taskElem;
 	}

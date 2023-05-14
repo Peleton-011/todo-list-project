@@ -4,22 +4,26 @@ import initializeForm from "./components/Form";
 import Task from "./logic/task";
 import Project from "./logic/project";
 
+import "./style.css";
+
 import Header from "./components/Header";
 
-function parseForm(form) {
-	const FD = new FormData(form);
-	const formObj = {};
+const getAddFunction = (type, target) => {
+	function parseForm(form) {
+		const FD = new FormData(form);
+		const formObj = {};
 
-	for (const [name, value] of FD) {
-		formObj[name] = formObj[name] || value;
+		for (const [name, value] of FD) {
+			formObj[name] = formObj[name] || value;
+		}
+		return formObj;
 	}
-	return formObj;
-}
 
-const getAddFunction = (type, target) => (e) => {
-    const form = e.target
-	const formData = parseForm(form);
-	target.handleAdd({ ...formData, type });
+	return (e) => {
+		const form = e.target;
+		const formData = parseForm(form);
+		target.handleAdd({ ...formData, type });
+	};
 };
 
 function tasksDisplayElem() {
@@ -28,7 +32,7 @@ function tasksDisplayElem() {
 	taskListElem.classList.add("container");
 
 	const config = { childList: true, subtree: true };
-
+/*
 	const callback = (mutationList, observer) => {
 		for (const mutation of mutationList) {
 			if (
@@ -50,6 +54,7 @@ function tasksDisplayElem() {
 
 	// Start observing the target node for configured mutations
 	observer.observe(taskListElem, config);
+    */
 
 	return taskListElem;
 }
@@ -108,17 +113,20 @@ const component = () => {
 	//Header (With form activation included)
 	component.appendChild(
 		Header({
-			onAddTask: (e) => toggleTaskForm(e, getAddFunction("task", mainProject)),
-			onAddProject: (e) => toggleProjectForm(e, 
-				getAddFunction("project", mainProject)
-			),
+			onAddTask: (e) =>
+				toggleTaskForm(e, getAddFunction("task", mainProject)),
+			onAddProject: (e) =>
+				toggleProjectForm(e, getAddFunction("project", mainProject)),
 		})
 	);
 
 	// addTasksTo({ tasks: taskList, target: taskListElem });
 
-	component.appendChild(taskListElem);
+	const content = mainProject.getElem();
 
+	// component.appendChild(taskListElem);
+
+    component.appendChild(content);
 
 	return component;
 };
