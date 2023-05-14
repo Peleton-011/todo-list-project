@@ -127,18 +127,26 @@ class Project extends Task {
 
 	addTaskElem(input) {
 		if (typeof input === "number") {
+			if (input < 0) {
+				input += this.taskList.length;
+			}
+            console.log(input)
+
+            console.log(this.taskList)
 			input = this.taskList[input];
+            console.log(input);
 		}
-		const target = this.getDomObject;
-		if (!target) {
+		const parent = this.getDomObject();
+		if (!parent) {
 			console.error("Element " + this.id + " is not in the DOM");
 			return;
 		}
+        const target = parent.querySelector("p:nth-of-type(2)")
 		target.appendChild(input.getElem());
 	}
 
 	getDomObject() {
-		return (domObj = document.getElementById(this.id));
+		return document.getElementById(this.id);
 	}
 
 	getElem() {

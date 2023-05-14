@@ -23,6 +23,7 @@ const getAddFunction = (type, target) => {
 		const form = e.target;
 		const formData = parseForm(form);
 		target.handleAdd({ ...formData, type });
+        target.addTaskElem(-1)
 	};
 };
 
