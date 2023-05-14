@@ -28,6 +28,7 @@ class Task {
 
 	getRemoveBtn() {
 		const removeBtn = document.createElement("button");
+        removeBtn.classList.add("remove-btn");
 		document.createElement("button");
 		removeBtn.innerText = "x";
 		removeBtn.setAttribute(
