@@ -6,8 +6,8 @@ import Project from "./logic/project";
 
 import Header from "./components/Header";
 
-function parseForm(id) {
-	const FD = new FormData(document.getElementById(id));
+function parseForm(form) {
+	const FD = new FormData(form);
 	const formObj = {};
 
 	for (const [name, value] of FD) {
@@ -16,8 +16,9 @@ function parseForm(id) {
 	return formObj;
 }
 
-const getAddFunction = (type, target) => (id) => {
-	const formData = parseForm(id);
+const getAddFunction = (type, target) => (e) => {
+    const form = e.target
+	const formData = parseForm(form);
 	target.handleAdd({ ...formData, type });
 };
 
