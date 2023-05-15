@@ -152,10 +152,22 @@ class Project extends Task {
 			return;
 		}
 
-        const lastChild = target.lastChild;
+		const hasChildren = target.querySelector("details");
+
+        console.log(hasChildren);
 
 
-        target.insertBefore(input.getElem(), target.lastChild)
+
+		if (hasChildren) {
+			target.insertBefore(input.getElem(), target.lastChild);
+			return;
+		}
+
+        const noContent = target.querySelector(".no-content");
+
+        console.log(noContent);
+
+        target.insertBefore(input.getElem(), noContent);
 	}
 
 	getDomObject() {
