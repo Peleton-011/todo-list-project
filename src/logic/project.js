@@ -6,7 +6,10 @@ class Project extends Task {
 	type = "project";
 
 	constructor(params) {
-		super(params);
+		super({...params, removeTask: (id) => {
+			this.taskList.filter((currTask) => currTask.id !== id);
+			document.getElementById(id).remove();
+		}});
 
 		this.getAddFunction = params.getAddFunction;
 		this.taskOnSubmit = params.getAddFunction("task", this);
@@ -22,6 +25,10 @@ class Project extends Task {
 		this.addTask = this.addTask.bind(this);
 		this.addProject = this.addProject;
 	}
+    removeTask = (id) => {
+        this.taskList.filter((currTask) => currTask.id !== id);
+        document.getElementById(id).remove();
+    };
 
 	handleAdd(config) {
 		if (config.type === "project") {
@@ -49,11 +56,6 @@ class Project extends Task {
 		return newConfig;
 	}
 
-	removeTask(id) {
-		this.taskList.filter((currTask) => currTask.id !== id);
-		document.getElementById(id).remove();
-	}
-
 	addTask({ taskTitle, description, dueDate, dueTime, priorityLevel }) {
 		const taskInterface = {
 			title: taskTitle,
@@ -63,6 +65,8 @@ class Project extends Task {
 			removeTask: this.removeTask.bind(this),
 			parent: this,
 		};
+		console.log("rem tasce");
+		console.log(taskInterface.removeTask);
 		const newTask = new Task(taskInterface);
 		this.taskList.push(newTask);
 	}
@@ -154,20 +158,18 @@ class Project extends Task {
 
 		const hasChildren = target.querySelector("details");
 
-        console.log(hasChildren);
-
-
+		console.log(hasChildren);
 
 		if (hasChildren) {
 			target.insertBefore(input.getElem(), target.lastChild);
 			return;
 		}
 
-        const noContent = target.querySelector(".no-content");
+		const noContent = target.querySelector(".no-content");
 
-        console.log(noContent);
+		console.log(noContent);
 
-        target.insertBefore(input.getElem(), noContent);
+		target.insertBefore(input.getElem(), noContent);
 	}
 
 	getDomObject() {

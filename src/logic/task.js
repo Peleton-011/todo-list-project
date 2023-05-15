@@ -14,6 +14,8 @@ class Task {
 		this.dueDate = dueDate || null;
 		this.id = id || newId();
 		this.#removeTask = removeTask;
+        console.log("remov task childre")
+        console.log(removeTask)
     }
 
 	getConfig() {
