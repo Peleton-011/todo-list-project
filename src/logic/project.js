@@ -8,6 +8,16 @@ class Project extends Task {
 	constructor(params) {
 		super(params);
 
+		this.getAddFunction = params.getAddFunction;
+		this.taskOnSubmit = params.getAddFunction("task", this);
+		this.projectOnSubmit = params.getAddFunction("project", this);
+
+		this.toggleTaskForm = params.toggleTaskForm;
+		this.toggleProjectForm = params.toggleProjectForm;
+
+		this.onAddTask = (e) => params.toggleTaskForm(e, this.taskOnSubmit);
+		this.onAddProject = (e) =>
+			params.toggleProjectForm(e, this.projectOnSubmit);
 		this.taskList = [];
 		this.addTask = this.addTask.bind(this);
 		this.addProject = this.addProject;
@@ -15,6 +25,12 @@ class Project extends Task {
 
 	handleAdd(config) {
 		if (config.type === "project") {
+			config.getAddFunction =
+				config.getAddFunction || this.getAddFunction;
+			config.toggleTaskForm =
+				config.toggleTaskForm || this.toggleTaskForm;
+			config.toggleProjectForm =
+				config.toggleProjectForm || this.toggleProjectForm;
 			this.addProject(config);
 			console.log("Project added ", config, " to ", this.id);
 			return;
@@ -25,7 +41,7 @@ class Project extends Task {
 	}
 
 	reformat(config) {
-        console.log(config)
+		console.log(config);
 		const newConfig = { taskTitle: config.tasklistTitle, ...config };
 
 		console.log(newConfig);
@@ -51,12 +67,24 @@ class Project extends Task {
 		this.taskList.push(newTask);
 	}
 
-	addProject({ projectTitle, description, dueDate, dueTime, priorityLevel }) {
+	addProject({
+		projectTitle,
+		description,
+		dueDate,
+		dueTime,
+		priorityLevel,
+		getAddFunction,
+		toggleProjectForm,
+		toggleTaskForm,
+	}) {
 		const projectInterface = {
 			title: projectTitle,
 			description: description,
 			priority: priorityLevel,
 			dueDate: [dueDate, dueTime],
+			getAddFunction,
+			toggleProjectForm,
+			toggleTaskForm,
 		};
 		const newProject = new Project(projectInterface);
 		this.taskList.push(newProject);
@@ -64,16 +92,16 @@ class Project extends Task {
 
 	getContent() {
 		const content = this.taskList.map((task) => task.getElem());
-		if (content.length < 1) {
-			const noContent = document.createElement("p");
-			noContent.innerText = "No tasks found.";
-			content.push(noContent);
-		}
+		const noContent = document.createElement("p");
+		noContent.innerText = "No tasks found.";
+		noContent.classList.add("no-content");
+		content.push(noContent);
+
 		content.push(this.getButtons());
 
 		const result = document.createElement("p");
 
-        result.id = "tasklist-" + this.id;
+		result.id = "tasklist-" + this.id;
 		//Inner tasks and such
 
 		content.forEach((elem) => {
@@ -85,48 +113,18 @@ class Project extends Task {
 	getButtons() {
 		const btns = document.createElement("div");
 
-		const onAddTask = (e) => {
-			const [taskForm, toggleTaskForm] = initializeForm({
-				type: "task",
-				addFunction: (args) => {
-					this.addTask();
-					document.getElementById("temp-form").remove();
-				},
-				titlePlaceholder: "Get eggs for an omelette",
-				descriptionPlaceholder:
-					"Ask Danny if he has some, or go to the store to get them.",
-				id: "temp-form",
-			});
-			document.querySelector("main").appendChild(taskForm);
-			toggleTaskForm(e);
-		};
+		const addTask = btn({ onclick: this.onAddTask, text: "Add Task" });
 
-		const onAddProject = (e) => {
-			const [projectForm, toggleProjectForm] = initializeForm({
-				type: "project",
-				addFunction: (args) => {
-					this.addProject();
-					document.getElementById("temp-form").remove();
-				},
-				titlePlaceholder: "Learn how to cook",
-				descriptionPlaceholder:
-					"Start by learning at least 5 different recipes to mix and match",
-				id: "temp-form",
-			});
-			document.querySelector("main").appendChild(projectForm);
-			toggleProjectForm(e);
-		};
-
-		const addTask = btn({ onclick: onAddTask, text: "Add Task" });
-
-		const addProject = btn({ onclick: onAddProject, text: "Add Project" });
+		const addProject = btn({
+			onclick: this.onAddProject,
+			text: "Add Project",
+		});
 
 		btns.setAttribute(
 			"style",
 			`
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        justify-items: end;
+            display: flex;
+            justify-content: flex-end;
     
         `
 		);
@@ -153,7 +151,11 @@ class Project extends Task {
 			console.error("Element " + this.id + " is not in the DOM");
 			return;
 		}
-		target.appendChild(input.getElem());
+
+        const lastChild = target.lastChild;
+
+
+        target.insertBefore(input.getElem(), target.lastChild)
 	}
 
 	getDomObject() {

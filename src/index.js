@@ -6,9 +6,9 @@ import Project from "./logic/project";
 
 import "./style.css";
 
-import Header from "./components/Hedor";
+import Header from "./components/Header";
 
-const getAddFunction = (type, target) => {
+const getAddFunction = (type, target, toggleTaskForm, toggleProjectForm) => {
 	function parseForm(form) {
 		const FD = new FormData(form);
 		const description = form.querySelector("textarea");
@@ -26,7 +26,13 @@ const getAddFunction = (type, target) => {
 	return (e) => {
 		const form = e.target;
 		const formData = parseForm(form);
-		target.handleAdd({ ...formData, type });
+		target.handleAdd({
+			...formData,
+			type,
+			getAddFunction,
+			toggleTaskForm,
+			toggleProjectForm,
+		});
 		target.addTaskElem(-1);
 	};
 };
@@ -86,10 +92,10 @@ function form({ type }) {
 }
 
 const component = () => {
-	const mainProject = new Project({ title: "main" });
-
-	mainProject.addTask({ taskTitle: "Test1" });
-	mainProject.addProject({ projectTitle: "Test2" });
+	const mainProject = new Project({
+		title: "main",
+		getAddFunction: getAddFunction,
+	});
 
 	const component = document.createElement("main");
 	component.classList.add("container");
@@ -117,8 +123,18 @@ const component = () => {
 
 	//Header (With form activation included)
 
-	const taskOnSubmit = getAddFunction("task", mainProject);
-	const projectOnSubmit = getAddFunction("project", mainProject);
+	const taskOnSubmit = getAddFunction(
+		"task",
+		mainProject,
+		toggleTaskForm,
+		toggleProjectForm
+	);
+	const projectOnSubmit = getAddFunction(
+		"project",
+		mainProject,
+		toggleTaskForm,
+		toggleProjectForm
+	);
 
 	component.appendChild(
 		Header({
@@ -130,6 +146,11 @@ const component = () => {
 	// addTasksTo({ tasks: taskList, target: taskListElem });
 
 	const content = mainProject.getContent();
+
+	const contentBtns = content.querySelector("div");
+
+	console.log(contentBtns.outerHTML);
+	if (contentBtns) content.removeChild(contentBtns);
 
 	// component.appendChild(taskListElem);
 
