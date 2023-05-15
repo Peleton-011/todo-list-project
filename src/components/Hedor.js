@@ -8,7 +8,10 @@ function Header({ onAddTask, onAddProject }) {
 
 	const addTask = btn({ onclick: (e) => onAddTask(e), text: "Add Task" });
 
-	const addProject = btn({ onclick: (e) => onAddProject(e), text: "Add Project" });
+	const addProject = btn({
+		onclick: (e) => onAddProject(e),
+		text: "Add Project",
+	});
 
 	btns.setAttribute(
 		"style",
