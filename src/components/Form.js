@@ -139,12 +139,12 @@ function initializeForm({
 
 	return [
 		form,
-		(onSubmit) => {
+		(e, onSubmit) => {
 			const form = document.getElementById(`${lowerType}-form`);
 
 			form.onsubmit = getOnSubmitFunc(onSubmit);
 
-			toggleForm();
+			toggleForm(e);
 		},
 	];
 }

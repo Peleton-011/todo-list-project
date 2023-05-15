@@ -7,14 +7,14 @@ class Task {
 	type = "task";
 	#removeTask;
 
-	constructor({ title, description, priority, dueDate, id, removeTask }) {
+	constructor({ title, description, priority, dueDate, id, removeTask, parent}) {
 		this.title = title || "Unnamed Task";
 		this.description = description || "No description available";
 		this.priority = priority || 5;
 		this.dueDate = dueDate || null;
 		this.id = id || newId();
 		this.#removeTask = removeTask;
-	}
+    }
 
 	getConfig() {
 		return {
@@ -28,6 +28,7 @@ class Task {
 
 	getRemoveBtn() {
 		const removeBtn = document.createElement("button");
+        removeBtn.classList.add("remove-btn");
 		document.createElement("button");
 		removeBtn.innerText = "x";
 		removeBtn.setAttribute(
@@ -79,6 +80,8 @@ class Task {
 
 		const descriptionElem = document.createElement("p");
 
+        descriptionElem.id = "description-" + this.id;
+
 		descriptionElem.innerText =
 			this.description || "No description available";
 
@@ -88,14 +91,11 @@ class Task {
 		summaryHeader.appendChild(removeBtn);
 
 		summary.appendChild(summaryHeader);
-		console.log(task);
 
 		task.appendChild(summary);
 
-		console.log(task);
 
 		task.appendChild(descriptionElem);
-		console.log(task);
 
 		return task;
 	}

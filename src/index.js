@@ -4,21 +4,31 @@ import initializeForm from "./components/Form";
 import Task from "./logic/task";
 import Project from "./logic/project";
 
+import "./style.css";
+
 import Header from "./components/Header";
 
-function parseForm(id) {
-	const FD = new FormData(document.getElementById(id));
-	const formObj = {};
+const getAddFunction = (type, target) => {
+	function parseForm(form) {
+		const FD = new FormData(form);
+		const description = form.querySelector("textarea");
+		const formObj = {};
+		if (description) formObj.description = description.value;
 
-	for (const [name, value] of FD) {
-		formObj[name] = formObj[name] || value;
+		console.log(FD);
+
+		for (const [name, value] of FD) {
+			formObj[name] = formObj[name] || value;
+		}
+		return formObj;
 	}
-	return formObj;
-}
 
-const getAddFunction = (type, target) => (id) => {
-	const formData = parseForm(id);
-	target.handleAdd({ ...formData, type });
+	return (e) => {
+		const form = e.target;
+		const formData = parseForm(form);
+		target.handleAdd({ ...formData, type });
+		target.addTaskElem(-1);
+	};
 };
 
 function tasksDisplayElem() {
@@ -27,7 +37,7 @@ function tasksDisplayElem() {
 	taskListElem.classList.add("container");
 
 	const config = { childList: true, subtree: true };
-
+	/*
 	const callback = (mutationList, observer) => {
 		for (const mutation of mutationList) {
 			if (
@@ -49,11 +59,12 @@ function tasksDisplayElem() {
 
 	// Start observing the target node for configured mutations
 	observer.observe(taskListElem, config);
+    */
 
 	return taskListElem;
 }
 
-function form({ type, targetProject, taskListElem }) {
+function form({ type }) {
 	const [titlePlaceholder, descriptionPlaceholder] =
 		type === "project"
 			? //For projects
@@ -105,20 +116,24 @@ const component = () => {
 	component.appendChild(projectForm);
 
 	//Header (With form activation included)
+
+	const taskOnSubmit = getAddFunction("task", mainProject);
+	const projectOnSubmit = getAddFunction("project", mainProject);
+
 	component.appendChild(
 		Header({
-			onAddTask: toggleTaskForm(getAddFunction("task", mainProject)),
-			onAddProject: toggleProjectForm(
-				getAddFunction("project", mainProject)
-			),
+			onAddTask: (e) => toggleTaskForm(e, taskOnSubmit),
+			onAddProject: (e) => toggleProjectForm(e, projectOnSubmit),
 		})
 	);
 
 	// addTasksTo({ tasks: taskList, target: taskListElem });
 
-	component.appendChild(taskListElem);
+	const content = mainProject.getContent();
 
-	updateMainContent(mainProject, taskListElem);
+	// component.appendChild(taskListElem);
+
+	component.appendChild(content);
 
 	return component;
 };

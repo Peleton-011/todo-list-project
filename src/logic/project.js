@@ -16,9 +16,21 @@ class Project extends Task {
 	handleAdd(config) {
 		if (config.type === "project") {
 			this.addProject(config);
+			console.log("Project added ", config, " to ", this.id);
 			return;
 		}
+		console.log("Task added ", config, " to ", this.id);
+		config = this.reformat(config);
 		this.addTask(config);
+	}
+
+	reformat(config) {
+        console.log(config)
+		const newConfig = { taskTitle: config.tasklistTitle, ...config };
+
+		console.log(newConfig);
+
+		return newConfig;
 	}
 
 	removeTask(id) {
@@ -33,6 +45,7 @@ class Project extends Task {
 			priority: priorityLevel,
 			dueDate: [dueDate, dueTime],
 			removeTask: this.removeTask.bind(this),
+			parent: this,
 		};
 		const newTask = new Task(taskInterface);
 		this.taskList.push(newTask);
@@ -58,7 +71,9 @@ class Project extends Task {
 		}
 		content.push(this.getButtons());
 
-        const result = document.createElement("p");
+		const result = document.createElement("p");
+
+        result.id = "tasklist-" + this.id;
 		//Inner tasks and such
 
 		content.forEach((elem) => {
@@ -122,15 +137,38 @@ class Project extends Task {
 		return btns;
 	}
 
+	addTaskElem(input) {
+		if (typeof input === "number") {
+			if (input < 0) {
+				input += this.taskList.length;
+			}
+			console.log(input);
+
+			console.log(this.taskList);
+			input = this.taskList[input];
+			console.log(input);
+		}
+		const target = this.getDomObject();
+		if (!target) {
+			console.error("Element " + this.id + " is not in the DOM");
+			return;
+		}
+		target.appendChild(input.getElem());
+	}
+
+	getDomObject() {
+		return document.getElementById("tasklist-" + this.id);
+	}
+
 	getElem() {
 		const taskElem = super.getElem();
 
-        const content = this.getContent();
+		const content = this.getContent();
 
-        const oldContent = taskElem.querySelector("p");
+		// const oldContent = taskElem.querySelector("p");
 
-		taskElem.insertBefore(content, oldContent);
-        taskElem.removeChild(oldContent);
+		taskElem.appendChild(content);
+		// taskElem.removeChild(oldContent);
 
 		return taskElem;
 	}
