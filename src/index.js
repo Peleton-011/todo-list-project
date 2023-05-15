@@ -6,7 +6,7 @@ import Project from "./logic/project";
 
 import "./style.css";
 
-import Header from "./components/Header";
+import Header from "./components/Hedor";
 
 const getAddFunction = (type, target) => {
 	function parseForm(form) {
